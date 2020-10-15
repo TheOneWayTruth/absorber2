@@ -1,5 +1,10 @@
 <template>
-  <div class="stats">
+  <div
+    class="fullsize"
+    :style="{
+      backgroundImage: 'url(' + require('@/assets/icons/background3.png') + ')',
+    }"
+  >
     <input autocorrect="off" class="faker" v-model="$parent.player.name" />
     <div style="display: flex">
       <button
@@ -48,7 +53,7 @@
           </div>
         </transition>
       </div>
-      <div v-show="Object.keys($parent.player.chance).length !== 0">
+      <div v-show="isEmpty($parent.player.chance)">
         <div @click="openchance = !openchance" class="kiste dark title">
           <span>Chances</span>
           <span v-if="openchance" style="float: right">▼</span>
@@ -68,7 +73,7 @@
           </div>
         </transition>
       </div>
-      <div v-show="Object.keys($parent.player.effects).length !== 0">
+      <div v-show="isEmpty($parent.player.effects)">
         <div @click="openeffects = !openeffects" class="kiste dark title">
           <span>Effects</span>
           <span v-if="openeffects" style="float: right">▼</span>
@@ -88,7 +93,7 @@
           </div>
         </transition>
       </div>
-      <div v-show="Object.keys($parent.player.resistance).length !== 0">
+      <div v-show="isEmpty($parent.player.resistance)">
         <div @click="openres = !openres" class="kiste dark title">
           <span>Resistance</span>
           <span v-if="openres" style="float: right">▼</span>
@@ -157,7 +162,7 @@
           </div>
         </div>
       </div>
-      <div v-show="Object.keys($parent.player.skills).length !== 0">
+      <div v-show="isEmpty($parent.player.skills)">
         <div @click="openskills = !openskills" class="kiste dark title">
           <span>Skills</span>
           <span v-if="openskills" style="float: right">▼</span>
@@ -268,6 +273,7 @@
               />
 
               <progress
+                class="wprog"
                 :max="value.req.count"
                 :value="$parent.player.allcount[value.req.id]"
                 style="width: 100px"
@@ -354,7 +360,11 @@ export default {
           sum += parseFloat(obj[el]);
         }
       }
+
       return sum;
+    },
+    isEmpty(o) {
+      return Object.keys(o).length !== 0;
     },
     getPercent(e) {
       if (this.$parent.player.allcount != undefined) {
@@ -577,12 +587,6 @@ export default {
 </script>
 
 <style scoped>
-.stats {
-  padding-bottom: 50px;
-  margin: 10px;
-  margin-top: 40px;
-}
-
 .title {
   width: 310px;
   margin: 4px;
@@ -713,5 +717,19 @@ export default {
 }
 .dark:hover {
   background: yellowgreen;
+}
+
+.wprog {
+  -webkit-appearance: none;
+}
+
+::-webkit-progress-bar {
+  color: green;
+  background-color: #777777;
+  border-radius: 5px;
+}
+
+::-webkit-progress-value {
+  border-radius: 5px;
 }
 </style>

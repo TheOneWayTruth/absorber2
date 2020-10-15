@@ -31,37 +31,14 @@ html,
   display: none;
 }
 
-.resistance {
-  background: lightcoral;
-}
-.effects {
-  background: lightcyan;
-}
-.chance {
-  background: lightgreen;
-}
-.basic {
-  background: lightyellow;
-}
-
 .beta {
-  border: 3px solid red;
+  border: 0px solid red;
 }
 
-::-webkit-scrollbar {
-  width: 15px;
-}
-
-::-webkit-scrollbar-track {
-  background: #777;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #474747;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #616161;
+.fullsize {
+  height: 100%;
+  min-height: 100vh;
+  padding: 30px 10px 80px 10px;
 }
 
 .btn {
@@ -143,5 +120,22 @@ html,
   vertical-align: middle;
   height: 20px;
   width: 20px;
+}
+
+/* Scrollbar Global */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: #777;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #474747;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #616161;
 }
 </style>

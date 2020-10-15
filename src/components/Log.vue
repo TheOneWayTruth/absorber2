@@ -2,13 +2,13 @@
   <div>
     <div
       v-if="!mini"
-      class="log"
+      class="fullsize"
       :style="{
         backgroundImage:
           'url(' + require('@/assets/icons/background2.png') + ')',
       }"
     >
-      <div style="display: flex">
+      <div style="display: flex;  align-content: flex-end">
         <button
           :class="{ active: !this.attacks }"
           @click="toggleLog('attacks')"
@@ -247,9 +247,6 @@ export default {
 </script>
 
 <style scoped>
-.log {
-  margin-top: 20px;
-}
 .flex {
   justify-content: center;
 }

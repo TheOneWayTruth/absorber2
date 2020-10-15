@@ -74,17 +74,19 @@
       />
       <Overlay :skilltree="skilltree" ref="ov" v-show="this.overlay" />
     </div>
-    <div style="padding-top: 100px" v-else>
-      <div class="center">
-        <div class="lds-ring">
-          <img
-            style="image-rendering: pixelated"
-            width="200px"
-            :src="require('@/assets/icons/hero.png')"
-            alt="stats"
-          />
+    <div
+      class="justfullsize"
+      :style="{
+        backgroundImage:
+          'url(' + require('@/assets/icons/background.png') + ')',
+      }"
+      v-else
+    >
+      <div class="loadmid">
+        <div class="rotate">
+          <img :src="require('@/assets/icons/hero.png')" alt="loading" />
         </div>
-        <span style="font-size: 40px">LOADING...</span>
+        <span style="font-size: 40px">LOADING</span>
       </div>
     </div>
   </div>
@@ -399,7 +401,6 @@ export default {
             break;
 
           default:
-            console.log(gain);
             player[gain] += obj.gain[gain];
             break;
         }
@@ -714,14 +715,27 @@ export default {
   margin-right: 2px;
 }
 
-.lds-ring {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  animation: lds-ring 1.2s infinite;
+.loadmid {
+  padding: 10px;
+  border: 1px solid black;
+  background-color: lightgray;
+  border-radius: 5px;
+  box-shadow: inset 0 0 4px grey;
+  text-align: center;
+
+  position: absolute;
+  left: calc(50% - 100px);
+  top: calc(50% - 200px);
 }
 
-@keyframes lds-ring {
+.rotate img {
+  image-rendering: pixelated;
+  width: 200px;
+  height: 200px;
+  animation: rotate 1s infinite;
+}
+
+@keyframes rotate {
   0% {
     transform: rotate(0deg);
   }
@@ -729,9 +743,8 @@ export default {
     transform: rotate(360deg);
   }
 }
-.center {
-  display: block;
-  width: 0%;
-  margin: auto;
+
+.justfullsize {
+  height: 100vh;
 }
 </style>

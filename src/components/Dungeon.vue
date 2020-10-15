@@ -1,12 +1,13 @@
 <template>
   <div
+    class="fullsize"
     :style="{
       backgroundImage: 'url(' + require('@/assets/icons/background2.png') + ')',
     }"
   >
-    <div class="moreroom">
+    <div>
       <div>
-        <div style="margin-top: 20px; margin-bottom: 10px" class="text">
+        <div class="text">
           <div>
             Press
             <b>CTRL</b> for stats. <b>SHIFT</b> for description.
@@ -181,11 +182,6 @@ export default {
 
 .kiste * {
   pointer-events: none;
-}
-
-.moreroom {
-  padding-top: 10px;
-  padding-bottom: 80px;
 }
 
 .faker {

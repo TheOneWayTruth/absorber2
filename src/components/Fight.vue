@@ -1,13 +1,12 @@
 <template>
   <div
-    class="rows"
+    class="rows nearlyfullsize"
     :style="{
       backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
     }"
   >
     <div class="row1 box">
       <h2 class="title">{{ item.name }}</h2>
-      <div style="border: 1px solid red" v-show="beta">{{ item.status }}</div>
       <br />
       <b>Stats:</b>
       <hr />
@@ -231,15 +230,12 @@ export default {
         "prestige",
       ];
 
-      let ob = Object.keys(arr)
+      return Object.keys(arr)
         .filter((key) => !allowed.includes(key))
         .reduce((obj, key) => {
           obj[key] = arr[key];
-
           return obj;
         }, {});
-
-      return ob;
     },
     exit() {
       if (
@@ -327,15 +323,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-}
-
-.rows {
-  display: block;
-  height: 500px;
-  padding: 10px;
-  display: flex;
-  align-content: space-between;
-  margin-top: 20px;
 }
 
 .row1 {
@@ -449,5 +436,14 @@ export default {
   width: 16px;
   margin: 0px;
   float: right;
+}
+
+.nearlyfullsize {
+  height: calc(100% - 30px);
+  min-height: calc(100vh - 90px);
+  padding: 30px 10px 0px 10px;
+  display: flex;
+  align-content: space-between;
+  align-items: baseline;
 }
 </style>

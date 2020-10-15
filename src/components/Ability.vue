@@ -2,7 +2,7 @@
   <div class="one">
     <img :src="getImage" />
     <transition name="fade" mode="out-in">
-      <span :key="rounded(val)">{{rounded(val)}}</span>
+      <span :key="rounded(val)">{{ rounded(val) }}</span>
     </transition>
     <Tooltip2 v-if="tooltip" :item="pid" />
   </div>
@@ -12,22 +12,22 @@
 import Tooltip2 from "./Tooltip2.vue";
 export default {
   components: {
-    Tooltip2
+    Tooltip2,
   },
   props: {
     pid: {
       type: String,
-      required: true
+      required: true,
     },
     val: {
       type: [String, Number],
-      required: true
+      required: true,
     },
     tooltip: {
       type: Boolean,
       required: false,
-      default: true
-    }
+      default: true,
+    },
   },
   methods: {
     rounded(i) {
@@ -36,13 +36,13 @@ export default {
       } else {
         return i;
       }
-    }
+    },
   },
   computed: {
-    getImage: function() {
-      return this.images.find(x => x.id == this.pid).img;
-    }
-  }
+    getImage: function () {
+      return this.images.find((x) => x.id == this.pid).img;
+    },
+  },
 };
 </script>
 
@@ -54,7 +54,7 @@ export default {
   line-height: 40px;
   white-space: nowrap;
   box-shadow: inset 0 0 2px #000000;
-  padding:5px; 
+  padding: 5px;
 }
 
 .one img {
@@ -64,6 +64,19 @@ export default {
 
 .fade-enter-active {
   animation: fade 0.5s;
+}
+
+.resistance {
+  background: lightcoral;
+}
+.effects {
+  background: lightcyan;
+}
+.chance {
+  background: lightgreen;
+}
+.basic {
+  background: lightyellow;
 }
 
 @keyframes fade {
