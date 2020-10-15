@@ -48,7 +48,7 @@
                                                                     {
                                                                         "id": "s_maxitems1",
                                                                         "typ": "s_maxitems",
-                                                                        "parent": "s_dmg0",
+                                                                        "parent": "m_crit1",
                                                                         "open": []
                                                                     }
                                                                 ]

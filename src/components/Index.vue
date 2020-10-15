@@ -219,9 +219,6 @@ export default {
         player.counter = pl.counter;
       }
 
-      //Callculation current Stats
-      //e = this.enemieslist.find((a) => a.id === d)
-
       for (let d in player.counter) {
         for (let a = 0; a < player.counter[d]; a++) {
           let e = this.enemieslist.find((a) => a.id === d);
@@ -402,6 +399,7 @@ export default {
             break;
 
           default:
+            console.log(gain);
             player[gain] += obj.gain[gain];
             break;
         }

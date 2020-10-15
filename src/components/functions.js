@@ -465,9 +465,7 @@ function checkEnemyDeath(target, attacker, func, res, kong, itemlist) {
       "chance" != a &&
       "speed" != a &&
       "resistance" != a &&
-      "life" != a &&
-      "regeneration" != a &&
-      "recovery" != a
+      "life" != a
     ) {
       target[a] += attacker.gain[a];
     } else if ("life" == a) {
@@ -520,7 +518,7 @@ function checkEnemyDeath(target, attacker, func, res, kong, itemlist) {
 
   if (attacker.boss) {
 
-    if (target.time > target.highscore[attacker.id]) {
+    if (target.time < target.highscore[attacker.id]) {
       target.highscore[attacker.id] = target.time
     }
 
