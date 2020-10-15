@@ -24,13 +24,12 @@ function showIndicator(c, d, e, f) {
   let g = {
     fire: "orange",
     bleed: "crimson",
-    poison: "green",
-    regeneration: "lightgreen",
-    crit1: "red",
+    poison: "lightgreen",
+    crit1: "brown",
     crit2: "yellow",
-    crit4: "blue",
-    crit8: "magenta",
-    crit16: "purple",
+    crit4: "purple",
+    crit8: "red",
+    crit16: "chartreuse",
     lifesteal: "darkred",
     reflect: "gold",
   }[d];
@@ -124,11 +123,11 @@ function checkRegeneration(a, b, c) {
   if (a.status.invert > 0) {
     changeLife(a, a.regeneration / 25, "invert", "damage", b, c);
   } else if (a.status.bury > 0 && a.regeneration > 0) {
-    a.regeneration * 4 + a.clife <= a.life
+    a.regeneration / 25 * 4 + a.clife <= a.life
       ? changeLife(a, a.regeneration / 6, "regeneration", "heal", b, c)
       : changeLife(a, a.life - a.clife, "regeneration", "heal", b, c);
   } else if (a.regeneration > 0) {
-    a.regeneration + a.clife <= a.life
+    a.regeneration / 25 + a.clife <= a.life
       ? changeLife(a, a.regeneration / 25, "regeneration", "heal", b, c)
       : changeLife(a, a.life - a.clife, "regeneration", "heal", b, c);
   }
@@ -250,14 +249,14 @@ function checkStun(a, b) {
 function checkSilence(a, b) {
   if (checkChance(a.chance.silence, "silence")) {
     b.status.silence++;
-    log.push(`<div class="chances">${a.name} <span style="color:white">silenced</span> ${b.name}</div>`);
+    log.push(`<div class="chances">${a.name} <span style="color:grey">silenced</span> ${b.name}</div>`);
   }
 }
 
 function checkBury(a) {
   if (checkChance(a.chance.bury, "bury")) {
     a.status.bury++;
-    log.push(`<div class="chances">${a.name} <span style="color:white">buried</span> himself</div>`);
+    log.push(`<div class="chances">${a.name} <span style="color:brown">buried</span> himself</div>`);
   }
 }
 

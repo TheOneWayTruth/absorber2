@@ -30,6 +30,7 @@
         </div>
       </div>
       <Tooltip
+        v-show="!dragging"
         :shift="$parent.$parent.shiftIsPressed"
         :ctrl="$parent.$parent.cntrlIsPressed"
         :item="value"
@@ -61,11 +62,17 @@ export default {
   components: {
     Tooltip,
   },
+  data() {
+    return {
+      dragging: false,
+    };
+  },
   methods: {
     isDragable() {
       return this.$parent.$parent.player.prestige >= 3;
     },
     handleDragStart(e) {
+      this.dragging = true;
       this.$parent.dragSrcEl = e.target.id;
       $(e.target).css("opacity", "0.5");
       e.dataTransfer.effectAllowed = "move";
@@ -93,6 +100,7 @@ export default {
       return false;
     },
     handleDragEnd(e) {
+      this.dragging = false;
       $(".kiste").removeClass("over");
       $(".kiste").css("opacity", "1");
     },
