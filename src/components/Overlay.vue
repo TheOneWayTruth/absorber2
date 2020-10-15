@@ -33,10 +33,7 @@
       <div class="overlay" :style="'background-color:' + this.color">
         <div
           class="kiste"
-          :style="{
-            backgroundImage:
-              'url(' + require('@/assets/icons/background.png') + ')',
-          }"
+          :style="{ backgroundImage: 'url(' + require('@/assets/icons/background3.png') + ')' }"
         >
           <button class="btn close" @click="close">X</button>
           <div class="points">Points: {{ this.$parent.player.points }}</div>
