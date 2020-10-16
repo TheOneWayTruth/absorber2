@@ -374,6 +374,14 @@ export default {
     SingleCalculation(obj, player) {
       for (let gain in obj.gain) {
         switch (gain) {
+          case "health":
+            if (player[gain] + obj.gain[gain] <= 1) {
+              player[gain] = 1;
+            } else {
+              player[gain] += obj.gain[gain];
+            }
+
+            break;
           case "effects":
             this.addOrCreate(player.effects, obj.gain.effects);
             break;
@@ -393,9 +401,9 @@ export default {
               }
             } else {
               if (player.sspeed - obj.gain.speed * -1 >= 0) {
-                player.sspeed -= obj.gain.speed;
+                player.sspeed += obj.gain.speed;
               } else {
-                player.speed += obj.gain.speed;
+                player.speed -= obj.gain.speed;
               }
             }
             break;

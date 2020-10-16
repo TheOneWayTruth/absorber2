@@ -100,7 +100,7 @@
           <span v-else style="float: right">▲</span>
         </div>
         <transition name="fade">
-          <div v-show="openres" class="kiste">
+          <div v-show="openres" class="kiste innerbox">
             <Ability
               class="resistance"
               :key="key + value"

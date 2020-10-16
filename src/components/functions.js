@@ -133,10 +133,9 @@ function checkRegeneration(a, b, c) {
   }
 }
 
-function checkChance(a, n) {
+function checkChance(a) {
   if (a != null) {
-    let p = Math.floor(10001 * Math.random());
-    if (p <= 100 * a) {
+    if (Math.floor(10001 * Math.random()) <= 100 * a) {
       return true;
     }
   }
@@ -148,20 +147,20 @@ function checkDodge(target, attacker) {
     if (null != target.effects)
       if (target.effects.precision != null)
         if (
-          checkChance(attacker.chance.dodge - target.effects.precision, "dodge")
+          checkChance(attacker.chance.dodge - target.effects.precision)
         ) {
           return true;
         } else {
           return false;
         }
 
-    if (checkChance(attacker.chance.dodge, "dodge")) return true;
+    if (checkChance(attacker.chance.dodge)) return true;
   }
   return false;
 }
 
 function checkDouble(a) {
-  return !!checkChance(a.chance.double, "double");
+  return checkChance(a.chance.double);
 }
 
 function CheckDotChance(name, a, b) {
@@ -178,10 +177,10 @@ function CheckDotChance(name, a, b) {
 
     if (chance >= 100) {
       let times = (chance - (chance % 100)) / 100;
-      checkChance(chance % 100, name) && times++;
+      checkChance(chance % 100) && times++;
       b.status[name] += times;
       log.push(`<div class="chances">${a.name} <span style="color:${obj.color}">${obj.verb}</span> ${b.name} ${times} times</div>`);
-    } else if (checkChance(chance, name)) {
+    } else if (checkChance(chance)) {
       b.status[name]++;
       log.push(`<div class="chances">${a.name} <span style="color:${obj.color}">${obj.verb}</span> ${b.name}</div>`);
     }
@@ -205,7 +204,7 @@ function checkDisarm(a, b) {
 }
 
 function checkInstakill(a, b) {
-  if (checkChance(a.chance.instakill, "instakill")) {
+  if (checkChance(a.chance.instakill)) {
     if (b.boss && !a.items.includes("helosword")) {
       log.push(`<div class="chances">${a.name} tryed to <span style="color:purple">instakill</span> ${b.name} doing ${b.life / 4} Damage</div>`);
       b.clife -= b.life / 4;
@@ -219,49 +218,49 @@ function checkInstakill(a, b) {
 }
 
 function checkSlow(a, b) {
-  if (checkChance(a.chance.slow, "slow")) {
+  if (checkChance(a.chance.slow)) {
     b.status.slow++;
     log.push(`<div class="chances">${a.name} <span style="color:lightGrey">slowed</span> ${b.name}</div>`);
   }
 }
 
 function checkInvert(a, b) {
-  if (checkChance(a.chance.invert, "invert")) {
+  if (checkChance(a.chance.invert)) {
     b.status.invert++;
     log.push(`<div class="chances">${a.name} <span style="color:white">invert</span> ${b.name}</div>`);
   }
 }
 
 function checkStim(a) {
-  if (checkChance(a.chance.stim, "stim")) {
+  if (checkChance(a.chance.stim)) {
     a.status.stim++;
     log.push(`<div class="chances">${a.name} <span style="color:green">used Stimmpack</span></div>`);
   }
 }
 
 function checkStun(a, b) {
-  if (checkChance(a.chance.stun, "stun")) {
+  if (checkChance(a.chance.stun)) {
     b.status.stun++;
     log.push(`<div class="chances">${a.name} <span style="color:lightYellow">stunned</span> ${b.name}</div>`);
   }
 }
 
 function checkSilence(a, b) {
-  if (checkChance(a.chance.silence, "silence")) {
+  if (checkChance(a.chance.silence)) {
     b.status.silence++;
     log.push(`<div class="chances">${a.name} <span style="color:grey">silenced</span> ${b.name}</div>`);
   }
 }
 
 function checkBury(a) {
-  if (checkChance(a.chance.bury, "bury")) {
+  if (checkChance(a.chance.bury)) {
     a.status.bury++;
     log.push(`<div class="chances">${a.name} <span style="color:brown">buried</span> himself</div>`);
   }
 }
 
 function checkRot(a, b) {
-  if (checkChance(a.chance.rot, "rot")) {
+  if (checkChance(a.chance.rot)) {
     b.status.rot++;
     log.push(`<div class="chances">${a.name} <span style="color:darkred">casted rot on</span> ${b.name}</div>`);
   }
@@ -336,13 +335,13 @@ export function checkTurn(target, attacker, disfi, exit, kong, itemlist) {
       checkSlow(target, attacker);
       checkStun(target, attacker);
       checkSilence(target, attacker);
-      if (checkChance(target.chance.crit, "crit")) {
+      if (checkChance(target.chance.crit)) {
         crit = 2;
-        if (checkChance(target.chance.supercrit, "supercrit")) {
+        if (checkChance(target.chance.supercrit)) {
           crit = 4;
-          if (checkChance(target.chance.megacrit, "megacrit")) {
+          if (checkChance(target.chance.megacrit)) {
             crit = 8
-            if (checkChance(target.chance.ultracrit, "ultracrit")) {
+            if (checkChance(target.chance.ultracrit)) {
               crit = 16
             }
           }
@@ -380,7 +379,7 @@ export function checkTurn(target, attacker, disfi, exit, kong, itemlist) {
 
 function checkCounter(target, attacker) {
   if (attacker.chance != null) {
-    if (checkChance(attacker.chance.counter, "counter")) {
+    if (checkChance(attacker.chance.counter)) {
       checkCrit(1, target, attacker, 0);
       log.push(`<div class="chances">${attacker.name} countered the attack</div>`);
     }
@@ -448,7 +447,7 @@ function animateObject(b) {
 
 function checkEnemyDeath(target, attacker, func, res, kong, itemlist) {
   if (attacker.chance != null) {
-    if (checkChance(attacker.chance.resurrect, "resurrect")) {
+    if (checkChance(attacker.chance.resurrect)) {
       respawn(attacker);
       return;
     }
@@ -474,17 +473,18 @@ function checkEnemyDeath(target, attacker, func, res, kong, itemlist) {
         target[a] += attacker.gain[a];
       }
     } else if ("speed" == a) {
-      if (attacker.gain[a] > 0) {
-        if (target[a] > 110) {
-          target[a] -= attacker.gain[a];
+      if (attacker.gain.speed > 0) {
+        if (target.speed - attacker.gain.speed < 110) {
+          target.speed = 110;
+          target.sspeed += target.speed - 110 + attacker.gain.speed;
         } else {
-          target.sspeed += attacker.gain[a];
+          target.speed -= attacker.gain.speed;
         }
       } else {
-        if (target.sspeed > 0) {
-          target.sspeed += attacker.gain[a];
+        if (target.sspeed - attacker.gain.speed * -1 >= 0) {
+          target.sspeed += attacker.gain.speed;
         } else {
-          target[a] -= attacker.gain[a];
+          target.speed -= attacker.gain.speed;
         }
       }
     } else if ("effects" == a)
@@ -621,7 +621,7 @@ export function respawn(t) {
 
 function checkPlayerDeath(a, b, d) {
   if (a.chance != null) {
-    if (checkChance(a.chance.resurrect, "resurrect")) {
+    if (checkChance(a.chance.resurrect)) {
       log.push(`<div class="chances">${a.name} resurrected</div>`);
       respawn(a);
       return;

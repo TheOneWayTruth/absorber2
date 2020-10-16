@@ -4,27 +4,7 @@
       <div v-if="ctrl">
         <h2 class="title">{{ item.name }}</h2>
         <b>Stats:</b>
-        <div class="fleo">
-          <div class="fleo" :key="g" v-for="(n, g) in filtred(item)">
-            <hr
-              style="width: 200px"
-              v-if="g == 'effects' || g == 'chance' || g == 'resistance'"
-            />
-            <div
-              class="fleo"
-              v-if="g == 'effects' || g == 'chance' || g == 'resistance'"
-            >
-              <Ability
-                :class="g"
-                :key="gi"
-                v-for="(gn, gi) in item[g]"
-                :pid="gi"
-                :val="gn"
-              />
-            </div>
-            <Ability v-else :pid="g" class="basic" :val="n" />
-          </div>
-        </div>
+        <Statslist :item="filtred(item)" />
       </div>
       <div v-else-if="shift">
         <h2 class="title">{{ item.name }}</h2>
@@ -59,27 +39,8 @@
             />
           </div>
         </div>
-
         <b v-if="Object.keys(item.gain).length !== 0">Gain:</b>
-        <div class="fleo">
-          <div class="fleo" :key="g" v-for="(n, g) in item.gain">
-            <hr
-              style="width: 200px"
-              v-if="g == 'effects' || g == 'chance' || g == 'resistance'"
-            />
-            <div v-if="g != 'effects' && g != 'chance' && g != 'resistance'">
-              <Ability class="basic" :pid="g" :val="n" />
-            </div>
-            <Ability
-              v-else
-              :class="g"
-              :key="gi"
-              v-for="(gn, gi) in item.gain[g]"
-              :pid="gi"
-              :val="gn"
-            />
-          </div>
-        </div>
+        <Statslist :item="item.gain" />
       </div>
     </div>
   </transition>
@@ -87,9 +48,12 @@
 
 <script>
 import Ability from "./Ability.vue";
+import Statslist from "./Statslist.vue";
 export default {
+  name: "Tooltip",
   components: {
     Ability,
+    Statslist,
   },
   props: {
     item: {
@@ -222,12 +186,6 @@ export default {
   margin: 0px;
 }
 
-.fleo {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
 .wiste {
   padding: 10px;
   position: fixed;
@@ -235,7 +193,7 @@ export default {
   background: whitesmoke;
   pointer-events: none;
   z-index: 10;
-  width: 220px;
+  width: 230px;
   overflow: hidden;
 }
 

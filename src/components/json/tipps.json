@@ -46,22 +46,22 @@
     },
     {
         "id": "crit",
-        "desc": "Chance in percent of performing a critical attack. Critical attacks double the damage",
+        "desc": "Chance to double the damage",
         "form": "dmg = dmg * 2"
     },
     {
         "id": "supercrit",
-        "desc": "Chance in percent of performing a super critical attack. Supercritical attacks quadruple the damage. Can only occur during critical attacks.",
+        "desc": "Chance to quadruple the damage. Can only occur when critical",
         "form": "dmg = dmg * 4"
     },
     {
         "id": "megacrit",
-        "desc": "Percentage of a mega-critical attack. Mega-critical attacks increase damage eightfold. Can only occur when super-critical.",
+        "desc": "Chance to increase damage eightfold. Can only occur when super-critical.",
         "form": "dmg = dmg * 8"
     },
     {
         "id": "ultracrit",
-        "desc": "Percentage of a ultra-critical attack. ultra-critical attacks increase damage sixteenfold. Can only occur when mega-critical.",
+        "desc": "Chance to increase damage sixteenfold. Can only occur when mega-critical.",
         "form": "dmg = dmg * 16"
     },
     {

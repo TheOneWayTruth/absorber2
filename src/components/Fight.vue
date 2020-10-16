@@ -5,49 +5,22 @@
       backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
     }"
   >
-    <div class="row1 box">
+    <div class="rowside box">
       <h2 class="title">{{ item.name }}</h2>
       <br />
-      <b>Stats:</b>
-      <hr />
-      <div class="fleo">
-        <div :key="g" v-for="(n, g) in filtred(item)">
-          <hr
-            style="width: 200px"
-            v-if="g == 'effects' || g == 'chance' || g == 'resistance'"
-          />
-          <div
-            class="fleo"
-            v-if="g == 'effects' || g == 'chance' || g == 'resistance'"
-          >
-            <div :key="gi" v-for="(gn, gi) in item[g]">
-              <Ability :class="g" :pid="gi" :val="gn" />
-            </div>
-          </div>
-          <div v-else>
-            <Ability class="basic" :pid="g" :val="n" />
-          </div>
-        </div>
+      <div>
+        <b>Stats:</b>
+        <hr />
+        <Statslist :item="filtred(item)" />
       </div>
       <br />
-      <b>Gain:</b>
-      <hr />
-      <div class="fleo">
-        <div class="fleo" :key="g" v-for="(n, g) in item.gain">
-          <hr
-            style="width: 200px"
-            v-if="g == 'effects' || g == 'chance' || g == 'resistance'"
-          />
-          <div v-if="g != 'effects' && g != 'chance' && g != 'resistance'">
-            <Ability class="basic" :pid="g" :val="n" />
-          </div>
-          <div v-else :key="gi" v-for="(gn, gi) in item.gain[g]">
-            <Ability :class="g" :pid="gi" :val="gn" />
-          </div>
-        </div>
-      </div>
       <div>
-        <br />
+        <b>Gain:</b>
+        <hr />
+        <Statslist :item="item.gain" />
+      </div>
+      <br />
+      <div>
         <b>Description:</b>
         <hr />
         <Ability
@@ -62,9 +35,7 @@
       <div>
         <div class="kasten">
           <div style="text-align: center; margin: 10px">
-            {{ this.$parent.player.counter[item.id] }}/{{
-              getLast(this.item.max, this.$parent.player.prestige)
-            }}
+            {{ this.$parent.player.counter[item.id] }}/{{ getLast() }}
           </div>
         </div>
         <div style="width: 200px">
@@ -100,7 +71,7 @@
       <Progressbar :val="item.cspeed" :max="item.speed" :speed="true" />
       <Progressbar :val="item.clife" :max="item.life" />
     </div>
-    <div class="row3 box">
+    <div class="rowside box">
       <div class="flex">
         <button
           :class="{ active: this.smallbox == 'stats' }"
@@ -185,9 +156,11 @@ import { checkTurn, respawn, getLast } from "./functions.js";
 import Ability from "./Ability.vue";
 import { dmgind } from "./gloabals.js";
 import TextToolTip from "./TextToolTip.vue";
+import Statslist from "./Statslist.vue";
 
 export default {
   components: {
+    Statslist,
     Progressbar,
     Ability,
     Log,
@@ -210,8 +183,8 @@ export default {
     chooseSmallBox(v) {
       this.smallbox = v;
     },
-    getLast(j, p) {
-      return getLast(j, p);
+    getLast() {
+      return getLast(this.item.max, this.$parent.player.prestige);
     },
     getImgUrl(id) {
       return this.images.find((x) => x.id == id).img;
@@ -325,11 +298,12 @@ export default {
   justify-content: space-between;
 }
 
-.row1 {
+.rowside {
   overflow: auto;
   height: 420px;
   float: left;
-  width: 20%;
+  min-width: 240px;
+  width: 25%;
   border-radius: 5px;
 }
 
@@ -339,15 +313,8 @@ export default {
   justify-content: center;
   height: 420px;
   float: left;
-  width: 60%;
-}
 
-.row3 {
-  overflow: auto;
-  height: 420px;
-  float: left;
-  width: 20%;
-  border-radius: 5px;
+  width: 50%;
 }
 
 .middle {
@@ -445,5 +412,11 @@ export default {
   display: flex;
   align-content: space-between;
   align-items: baseline;
+}
+
+@media only screen and (max-height: 630px) {
+  .nearlyfullsize {
+    align-items: flex-start;
+  }
 }
 </style>
