@@ -333,15 +333,26 @@
               <span>Save</span>
             </button>
           </div>
-          <div v-else style="display: flex">
-            <button class="btn load half" @click="Cloudload">
-              <img :src="require('@/assets/icons/cloudload.png')" alt="load" />
-              <span>Load</span>
-            </button>
-            <button class="btn save half" @click="Cloudsave">
-              <img :src="require('@/assets/icons/cloudsave.png')" alt="save" />
-              <span>Save</span>
-            </button>
+          <div v-else>
+            <span style="border: 1px solid red" v-show="beta"
+              >Dosnt work in Beta</span
+            >
+            <div style="display: flex">
+              <button class="btn load half" @click="Cloudload">
+                <img
+                  :src="require('@/assets/icons/cloudload.png')"
+                  alt="load"
+                />
+                <span>Load</span>
+              </button>
+              <button class="btn save half" @click="Cloudsave">
+                <img
+                  :src="require('@/assets/icons/cloudsave.png')"
+                  alt="save"
+                />
+                <span>Save</span>
+              </button>
+            </div>
           </div>
         </div>
 
