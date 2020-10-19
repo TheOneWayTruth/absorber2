@@ -11,12 +11,13 @@
           <div style="font-size: 30px">{{ text }}</div>
           <div>
             <img
+              style="image-rendering: pixelated"
               width="200px;"
               v-if="this.img != ''"
               :src="require('@/assets/' + this.img + '.png')"
             />
           </div>
-          <div class="flex">
+          <div class="flex" style="width: 100%">
             <div
               class="btn"
               :key="k"

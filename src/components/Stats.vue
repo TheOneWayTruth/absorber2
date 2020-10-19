@@ -287,39 +287,78 @@
         </div>
       </div>
       <div class="ecke">
-        <button class="btn export" @click="exportSave">
-          <img :src="require('@/assets/icons/export.png')" alt="Export" />
-          Export
-        </button>
+        <div class="boxbox">
+          <h2>FILE</h2>
+          <div style="display: flex">
+            <button class="btn half" @click="exportSave">
+              <img :src="require('@/assets/icons/export.png')" alt="Export" />
+              <span>Export</span>
+            </button>
+
+            <button class="btn half" @click="importSave">
+              <label
+                for="import"
+                style="
+                  cursor: pointer;
+                  display: flex;
+                  justify-content: center;
+                  flex-wrap: wrap;
+                "
+              >
+                <img :src="require('@/assets/icons/import.png')" alt="Import" />
+                <span>Import</span>
+              </label>
+            </button>
+          </div>
+        </div>
 
         <input ref="import" id="import" accept="text/txt" type="file" />
 
-        <button class="btn import" @click="importSave">
-          <label for="import" style="cursor: pointer">
-            <img :src="require('@/assets/icons/import.png')" alt="Import" />
-            <span>Import</span>
+        <div class="boxbox">
+          <label v-if="$parent.cloud" class="switch">
+            <input v-model="clouduse" type="checkbox" />
+            <h2 class="slider round">
+              <span v-if="!clouduse">LOCAL</span><span v-else>CLOUD</span>
+            </h2>
           </label>
-        </button>
+          <h2 v-else>LOCAL</h2>
+          <div v-if="!clouduse" style="display: flex">
+            <button class="btn half" @click="loadGame">
+              <img :src="require('@/assets/icons/load.png')" alt="Load" />
+              <span>Load</span>
+            </button>
 
-        <button class="btn load" @click="loadGame">
-          <img :src="require('@/assets/icons/load.png')" alt="Load" />
-          Load
-        </button>
+            <button class="btn half" @click="saveGame">
+              <img :src="require('@/assets/icons/save.png')" alt="Save" />
+              <span>Save</span>
+            </button>
+          </div>
+          <div v-else style="display: flex">
+            <button class="btn load half" @click="Cloudload">
+              <img :src="require('@/assets/icons/cloudload.png')" alt="load" />
+              <span>Load</span>
+            </button>
+            <button class="btn save half" @click="Cloudsave">
+              <img :src="require('@/assets/icons/cloudsave.png')" alt="save" />
+              <span>Save</span>
+            </button>
+          </div>
+        </div>
 
-        <button class="btn save" @click="saveGame">
-          <img :src="require('@/assets/icons/save.png')" alt="Save" />
-          Save
-        </button>
+        <div class="boxbox">
+          <h2>RESET</h2>
+          <div style="display: flex">
+            <button class="btn half" @click="opensoft">
+              <img :src="require('@/assets/icons/softreset.png')" alt="reset" />
+              <span>Soft</span>
+            </button>
 
-        <button class="btn hard" @click="openreset">
-          <img :src="require('@/assets/icons/reset.png')" alt="reset" />
-          Hardreset
-        </button>
-
-        <button class="btn hard" @click="opensoft">
-          <img :src="require('@/assets/icons/softreset.png')" alt="reset" />
-          Softreset
-        </button>
+            <button class="btn half" @click="openreset">
+              <img :src="require('@/assets/icons/reset.png')" alt="reset" />
+              <span>Hard</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -350,9 +389,30 @@ export default {
       openskills: true,
       opencomp: true,
       openitems: true,
+      clouduse: false,
     };
   },
   methods: {
+    Cloudload() {
+      let el = this;
+      PlayFabClientSDK.GetUserData({
+        SessionTicket: el.$parent.PlayFab,
+      }).then(function (x) {
+        el.$parent.player = JSON.parse(x.data.Data.save.Value);
+        console.log("loaded");
+      });
+    },
+    Cloudsave() {
+      let el = this;
+
+      var d = {
+        Data: { save: JSON.stringify(this.$parent.player) },
+      };
+
+      PlayFabClientSDK.UpdateUserData(d).then(function (x) {
+        console.log("saved");
+      });
+    },
     getAnyElement(obj) {
       var sum = 0;
       for (var el in obj) {
@@ -490,10 +550,10 @@ export default {
     openreset() {
       let ov = this.$parent.$refs.ov.$data;
       ov.text = "Do you really want to wipe your entire save?";
-      ov.place = "30%";
+      ov.place = "12.5%";
       ov.obj = [
-        { text: "yes", func: this.$parent.hardreset },
-        { text: "no", func: this.closereset },
+        { text: "Yes", func: this.$parent.hardreset },
+        { text: "No", func: this.closereset },
       ];
       ov.img = "icons/reset";
       this.$parent.overlay = true;
@@ -501,12 +561,12 @@ export default {
     opensoft() {
       let ov = this.$parent.$refs.ov.$data;
       ov.text = "Do you really want to wipe your current run?";
-      ov.place = "30%";
+      ov.place = "12.5%";
       ov.obj = [
-        { text: "yes", func: this.$parent.softreset },
-        { text: "no", func: this.closereset },
+        { text: "Yes", func: this.$parent.softreset },
+        { text: "No", func: this.closereset },
       ];
-      ov.img = "icons/reset";
+      ov.img = "icons/softreset";
       this.$parent.overlay = true;
     },
     closereset() {
@@ -591,6 +651,14 @@ export default {
   width: 310px;
   margin: 4px;
 }
+.half {
+  padding: 3px;
+  margin: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 70px;
+  justify-content: center;
+}
 
 #import {
   display: none;
@@ -609,7 +677,7 @@ export default {
 
 .faker {
   display: block;
-  width: 790px;
+  width: 600px;
   border: 1px solid black;
   box-shadow: inset 0 0 4px grey;
   border-radius: 10px;
@@ -621,6 +689,18 @@ export default {
   font-weight: bold;
   cursor: text;
   font-family: "MedievalSharp", cursive;
+}
+
+.boxbox {
+  margin: 3px 0px;
+  text-align: center;
+  border: 1px solid black;
+  background: silver;
+  border-radius: 4px;
+  box-shadow: inset 0 0 4px grey;
+}
+.boxbox h2 {
+  margin: 3px;
 }
 
 .flex {
@@ -662,7 +742,7 @@ export default {
   flex-direction: column;
   position: fixed;
   bottom: 65px;
-  right: 40px;
+  right: 20px;
 }
 
 .import {
@@ -731,5 +811,62 @@ export default {
 
 ::-webkit-progress-value {
   border-radius: 5px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 140px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  text-align: center;
+  line-height: 34px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 1px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: white;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(100px);
+  background: grey;
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 </style>

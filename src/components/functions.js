@@ -517,6 +517,10 @@ function checkEnemyDeath(target, attacker, func, res, kong, itemlist) {
 
   if (attacker.boss) {
 
+
+    if (target.highscore[attacker.id] == undefined || target.highscore[attacker.id] == -1) {
+      target.highscore[attacker.id] = 999999999;
+    }
     if (target.time < target.highscore[attacker.id]) {
       target.highscore[attacker.id] = target.time
     }

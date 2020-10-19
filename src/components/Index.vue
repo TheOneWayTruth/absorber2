@@ -136,6 +136,8 @@ export default {
       log: log,
       complist: [],
       loading: true,
+      cloud: false,
+      PlayFab: 0,
     };
   },
   methods: {
@@ -182,7 +184,11 @@ export default {
 
       //Get Stats from save
 
-      player.highscore = this.CalculateHighscore(pl.highscore);
+      if (!isEmpty(pl.highscore)) {
+        player.highscore = pl.highscore;
+      } else {
+        player.highscore = {};
+      }
 
       if (pl.allcount != undefined) {
         if (!isEmpty(pl.allcount)) {
@@ -283,6 +289,12 @@ export default {
         player.go = true;
       }
 
+      //check if too much items
+      if (player.maxitems < player.items.length) {
+        let w = player.items.length - player.maxitems;
+        player.items.splice(-w, w);
+      }
+
       this.player = player;
       respawn(this.player);
       this.loading = false;
@@ -355,21 +367,6 @@ export default {
           break;
       }
       this.player.tutorial++;
-    },
-    CalculateHighscore(highscore) {
-      let newscore;
-      if (isEmpty(highscore)) {
-        newscore = {};
-        for (let e of this.enemieslist.filter((x) => x.boss)) {
-          newscore[e.id] = -1;
-        }
-      } else if (8 > this.ObjectLength(newscore)) {
-        newscore = highscore;
-        for (let e of this.enemieslist.filter((x) => x.boss)) {
-          newscore[e.id] == undefined && (newscore[e.id] = -1);
-        }
-      }
-      return newscore;
     },
     SingleCalculation(obj, player) {
       for (let gain in obj.gain) {
@@ -581,6 +578,44 @@ export default {
         });
       this.preloaded = true;
     },
+    loginInUsingPlayFab() {
+      let el = this;
+      PlayFab.settings.titleId = "857F6";
+
+      var request = {};
+
+      if (this.beta) {
+        request = {
+          Username: "schlauewurst",
+          Password: "123456",
+          RequireBothUsernameAndEmail: false,
+          CreateAccount: true,
+        };
+        PlayFabClientSDK.LoginWithPlayFab(
+          request,
+          function (v) {
+            el.PlayFab = v.data.SessionTicket;
+            el.cloud = true;
+          },
+          function (v) {}
+        );
+      } else {
+        request = {
+          TitleId: PlayFab.settings.titleId,
+          AuthTicket: kongregate.services.getGameAuthToken(),
+          KongregateId: kongregate.services.getUserId(),
+          CreateAccount: true,
+        };
+        PlayFabClientSDK.LoginWithKongregate(
+          request,
+          function (v) {
+            el.PlayFab = v.data.SessionTicket;
+            el.cloud = true;
+          },
+          function (v) {}
+        );
+      }
+    },
   },
   mounted() {
     let el = this,
@@ -589,6 +624,7 @@ export default {
       kongregateAPI.loadAPI(function () {
         kongregate = kongregateAPI.getAPI();
         el.kongregate = kongregate;
+        el.loginInUsingPlayFab();
       });
     } catch {}
 

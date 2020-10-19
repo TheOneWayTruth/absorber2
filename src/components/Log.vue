@@ -7,8 +7,9 @@
         backgroundImage:
           'url(' + require('@/assets/icons/background2.png') + ')',
       }"
+      style="display: flex; flex-direction: column"
     >
-      <div style="display: flex;  align-content: flex-end">
+      <div style="display: flex; align-self: center">
         <button
           :class="{ active: !this.attacks }"
           @click="toggleLog('attacks')"
@@ -115,7 +116,7 @@
       </div>
     </div>
     <div v-else>
-      <div style="display: flex; flex-wrap: wrap; max-width: 200px">
+      <div style="display: flex; flex-wrap: wrap; max-width: 250px">
         <button
           :class="{ active: !this.attacks }"
           @click="toggleLog('attacks')"

@@ -58,6 +58,12 @@
                 :src="require('@/assets/icons/search.png')"
                 alt="search"
               />
+              <span
+                v-show="searchv != ''"
+                @click="closesearch"
+                class="closesearch"
+                >X</span
+              >
               <input autocorrect="off" class="faker" v-model="searchv" />
             </div>
           </div>
@@ -98,6 +104,9 @@ export default {
     };
   },
   methods: {
+    closesearch() {
+      this.searchv = "";
+    },
     hideUnhide() {
       this.hidden = !this.hidden;
     },
@@ -198,5 +207,15 @@ export default {
   font-weight: bold;
   cursor: text;
   font-family: "MedievalSharp", cursive;
+}
+.closesearch {
+  padding: 2px;
+  margin: 5px;
+  float: right;
+  color: red;
+  font-size: 28px;
+  cursor: pointer;
+  transform: translate(180px);
+  position: absolute;
 }
 </style>
