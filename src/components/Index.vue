@@ -582,39 +582,21 @@ export default {
       let el = this;
       PlayFab.settings.titleId = "857F6";
 
-      var request = {};
+      var request = {
+        TitleId: PlayFab.settings.titleId,
+        AuthTicket: this.kongregate.services.getGameAuthToken(),
+        KongregateId: this.kongregate.services.getUserId(),
+        CreateAccount: true,
+      };
 
-      if (this.beta) {
-        request = {
-          Username: "schlauewurst",
-          Password: "123456",
-          RequireBothUsernameAndEmail: false,
-          CreateAccount: true,
-        };
-        PlayFabClientSDK.LoginWithPlayFab(
-          request,
-          function (v) {
-            el.PlayFab = v.data.SessionTicket;
-            el.cloud = true;
-          },
-          function (v) {}
-        );
-      } else {
-        request = {
-          TitleId: PlayFab.settings.titleId,
-          AuthTicket: el.kongregate.services.getGameAuthToken(),
-          KongregateId: el.kongregate.services.getUserId(),
-          CreateAccount: true,
-        };
-        PlayFabClientSDK.LoginWithKongregate(
-          request,
-          function (v) {
-            el.PlayFab = v.data.SessionTicket;
-            el.cloud = true;
-          },
-          function (v) {}
-        );
-      }
+      PlayFabClientSDK.LoginWithKongregate(
+        request,
+        function (v) {
+          el.PlayFab = v.data.SessionTicket;
+          el.cloud = true;
+        },
+        function (v) {}
+      );
     },
   },
   mounted() {
