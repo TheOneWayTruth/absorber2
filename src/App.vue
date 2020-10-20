@@ -32,7 +32,7 @@ html,
 }
 
 .beta {
-  border: 0px solid red;
+  border: 1px solid red;
 }
 
 .fullsize {

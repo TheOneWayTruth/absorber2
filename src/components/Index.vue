@@ -602,8 +602,8 @@ export default {
       } else {
         request = {
           TitleId: PlayFab.settings.titleId,
-          AuthTicket: kongregate.services.getGameAuthToken(),
-          KongregateId: kongregate.services.getUserId(),
+          AuthTicket: el.kongregate.services.getGameAuthToken(),
+          KongregateId: el.kongregate.services.getUserId(),
           CreateAccount: true,
         };
         PlayFabClientSDK.LoginWithKongregate(
