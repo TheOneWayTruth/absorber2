@@ -219,7 +219,8 @@ export default {
       player.time = pl.time;
       player.lastEnemy = pl.lastEnemy;
 
-      if (pl.counter.length <= 0) {
+      if (isEmpty(pl.counter)) {
+        player.counter = {};
         for (let en of this.enemieslist) {
           player.counter[en.id] = 0;
         }
