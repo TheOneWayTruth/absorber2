@@ -11,30 +11,23 @@
         :src="getImage"
         @click="fun(item.id)"
       />
-      <TextToolTip :title="gettipp.name" :item="gettipp.desc" />
+      <TooltipItem :type="'text'" :title="gettipp.name" :item="gettipp.desc" />
     </div>
     <div v-if="item.open.length > 0" class="flex-colum">
-      <Accordion
-        :can="can"
-        :co="co"
-        :fun="fun"
-        :key="i.id"
-        :item="i"
-        v-for="i of item.open"
-      />
+      <AccordionItem :can="can" :co="co" :fun="fun" :key="i.id" :item="i" v-for="i of item.open" />
     </div>
   </div>
 </template>
 
 <script>
-import TextToolTip from "./TextToolTip.vue";
-import Accordion from "./Accordion.vue";
+import TooltipItem from "./Tooltip.vue";
+import AccordionItem from "./Accordion.vue";
 
 export default {
-  name: "Accordion",
+  name: "AccordionItem",
   components: {
-    Accordion,
-    TextToolTip,
+    AccordionItem,
+    TooltipItem,
   },
   props: {
     item: {

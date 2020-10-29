@@ -4,45 +4,24 @@
       v-if="!mini"
       class="fullsize"
       :style="{
-        backgroundImage:
-          'url(' + require('@/assets/icons/background2.png') + ')',
+        backgroundImage: 'url(' + require('@/assets/icons/background2.png') + ')',
       }"
       style="display: flex; flex-direction: column"
     >
       <div style="display: flex; align-self: center">
-        <button
-          :class="{ active: !this.attacks }"
-          @click="toggleLog('attacks')"
-          class="btn dun"
-        >
+        <button :class="{ active: !this.attacks }" @click="toggleLog('attacks')" class="btn dun">
           basic
         </button>
-        <button
-          :class="{ active: !this.chance }"
-          @click="toggleLog('chance')"
-          class="btn dun"
-        >
+        <button :class="{ active: !this.chance }" @click="toggleLog('chance')" class="btn dun">
           chance
         </button>
-        <button
-          :class="{ active: !this.crit }"
-          @click="toggleLog('crit')"
-          class="btn dun"
-        >
+        <button :class="{ active: !this.crit }" @click="toggleLog('crit')" class="btn dun">
           crit
         </button>
-        <button
-          :class="{ active: !this.effects }"
-          @click="toggleLog('effects')"
-          class="btn dun"
-        >
+        <button :class="{ active: !this.effects }" @click="toggleLog('effects')" class="btn dun">
           effects
         </button>
-        <button
-          :class="{ active: !this.death }"
-          @click="toggleLog('death')"
-          class="btn dun"
-        >
+        <button :class="{ active: !this.death }" @click="toggleLog('death')" class="btn dun">
           death
         </button>
       </div>
@@ -53,12 +32,7 @@
           </div>
         </div>
         <div class="credits">
-          <a
-            class="abs"
-            style="right: 80px"
-            target="_blank"
-            href="https://discord.gg/gUwvjw2"
-          >
+          <a class="abs" style="right: 80px" target="_blank" href="https://discord.gg/gUwvjw2">
             <img :src="require('@/assets/icons/discord.png')" alt="discord" />
           </a>
 
@@ -92,17 +66,9 @@
             style="right: 260px"
             href="https://shop.spreadshirt.de/Absorber/"
           >
-            <img
-              :src="require('@/assets/icons/spreadshirt.png')"
-              alt="spreadshirt"
-            />
+            <img :src="require('@/assets/icons/spreadshirt.png')" alt="spreadshirt" />
           </a>
-          <div
-            v-if="!mini"
-            @click="openChange()"
-            class="abs clickable"
-            style="left: 20px"
-          >
+          <div v-if="!mini" @click="openChange()" class="abs clickable" style="left: 20px">
             {{ this.$parent.player.version }}
           </div>
         </div>
@@ -124,18 +90,10 @@
         >
           basic
         </button>
-        <button
-          :class="{ active: !this.chance }"
-          @click="toggleLog('chance')"
-          class="btn dun dum"
-        >
+        <button :class="{ active: !this.chance }" @click="toggleLog('chance')" class="btn dun dum">
           chance
         </button>
-        <button
-          :class="{ active: !this.crit }"
-          @click="toggleLog('crit')"
-          class="btn dun dum"
-        >
+        <button :class="{ active: !this.crit }" @click="toggleLog('crit')" class="btn dun dum">
           crit
         </button>
         <button
@@ -145,11 +103,7 @@
         >
           effects
         </button>
-        <button
-          :class="{ active: !this.death }"
-          @click="toggleLog('death')"
-          class="btn dun dum"
-        >
+        <button :class="{ active: !this.death }" @click="toggleLog('death')" class="btn dun dum">
           death
         </button>
       </div>
@@ -162,6 +116,7 @@
 
 <script>
 export default {
+  name: "LogItem",
   props: {
     mini: {
       type: Boolean,

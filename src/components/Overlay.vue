@@ -18,12 +18,7 @@
             />
           </div>
           <div class="flex" style="width: 100%">
-            <div
-              class="btn"
-              :key="k"
-              v-for="(thing, k) in obj"
-              @click="thing.func"
-            >
+            <div class="btn" :key="k" v-for="(thing, k) in obj" @click="thing.func">
               <div>{{ thing.text }}</div>
             </div>
           </div>
@@ -35,8 +30,7 @@
         <div
           class="kiste"
           :style="{
-            backgroundImage:
-              'url(' + require('@/assets/icons/background.png') + ')',
+            backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
           }"
         >
           <button class="btn close" @click="close">X</button>
@@ -92,16 +86,13 @@ import Accordion from "./Accordion.vue";
 import { getParentById, getNodeById } from "./functions.js";
 
 export default {
+  name: "OverlayItem",
   components: {
     Accordion,
   },
   methods: {
     chooseskill(s) {
-      if (
-        !this.choosen(s) &&
-        this.$parent.player.points > 0 &&
-        !this.canBeChoosen(s)
-      ) {
+      if (!this.choosen(s) && this.$parent.player.points > 0 && !this.canBeChoosen(s)) {
         this.$parent.player.skills.push(s);
         this.$parent.player.points--;
         this.$parent.recalculate(this.$parent.player);

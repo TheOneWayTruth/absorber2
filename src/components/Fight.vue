@@ -47,22 +47,13 @@
             :src="getImgUrl(item.id)"
             :alt="item.name"
           />
-          <span
-            class="dmgind"
-            :style="'color:' + ind.color"
-            :key="k"
-            v-for="(ind, k) in dmgind"
-            >{{ ind.text }}</span
-          >
+          <span class="dmgind" :style="'color:' + ind.color" :key="k" v-for="(ind, k) in dmgind">{{
+            ind.text
+          }}</span>
         </div>
 
         <div class="flex">
-          <div
-            v-show="value > 0"
-            class="kiste"
-            :key="key"
-            v-for="(value, key) in this.item.status"
-          >
+          <div v-show="value > 0" class="kiste" :key="key" v-for="(value, key) in this.item.status">
             {{ value }}
             <img class="icon" :src="getImgUrl('b' + key)" :alt="key" />
           </div>
@@ -95,19 +86,12 @@
         <hr />
         <div class="fleo">
           <div class="fleo" :key="g" v-for="(n, g) in item.gain">
-            <hr
-              style="width: 200px"
-              v-if="g == 'effects' || g == 'chance' || g == 'resistance'"
-            />
+            <hr style="width: 200px" v-if="g == 'effects' || g == 'chance' || g == 'resistance'" />
 
             <div v-if="g != 'effects' && g != 'chance' && g != 'resistance'">
               <Ability class="basic" :pid="g" :val="$parent.player[g]" />
             </div>
-            <div
-              v-else-if="g == 'effects'"
-              :key="i"
-              v-for="(k, i) in item.gain.effects"
-            >
+            <div v-else-if="g == 'effects'" :key="i" v-for="(k, i) in item.gain.effects">
               <Ability
                 v-if="$parent.player.effects[i] != undefined"
                 :class="g"
@@ -115,11 +99,7 @@
                 :val="$parent.player.effects[i]"
               />
             </div>
-            <div
-              v-else-if="g == 'chance'"
-              :key="i"
-              v-for="(k, i) in item.gain.chance"
-            >
+            <div v-else-if="g == 'chance'" :key="i" v-for="(k, i) in item.gain.chance">
               <Ability
                 v-if="$parent.player.chance[i] != undefined"
                 :class="g"
@@ -127,11 +107,7 @@
                 :val="$parent.player.chance[i]"
               />
             </div>
-            <div
-              v-else-if="g == 'resistance'"
-              :key="i"
-              v-for="(k, i) in item.gain.resistance"
-            >
+            <div v-else-if="g == 'resistance'" :key="i" v-for="(k, i) in item.gain.resistance">
               <Ability
                 v-if="$parent.player.resistance[i] != undefined"
                 :class="g"
@@ -154,11 +130,11 @@ import Log from "./Log.vue";
 import Progressbar from "./Progressbar.vue";
 import { checkTurn, respawn, getLast } from "./functions.js";
 import Ability from "./Ability.vue";
-import { dmgind } from "./gloabals.js";
-import TextToolTip from "./TextToolTip.vue";
 import Statslist from "./Statslist.vue";
+import { dmgind } from "./gloabals.js";
 
 export default {
+  name: "FightItem",
   components: {
     Statslist,
     Progressbar,
@@ -211,10 +187,7 @@ export default {
         }, {});
     },
     exit() {
-      if (
-        this.$parent.player.clife == this.$parent.player.life &&
-        this.$parent.player.auto
-      ) {
+      if (this.$parent.player.clife == this.$parent.player.life && this.$parent.player.auto) {
         this.$parent.setNextEnemy();
       } else {
         this.$parent.enemy = null;
@@ -237,25 +210,11 @@ export default {
 
     player.lastEnemy = this.item.id;
     this.timer2 = setInterval(() => {
-      checkTurn(
-        player,
-        this.item,
-        this.won,
-        this.exit,
-        this.$parent.kongregate,
-        this.itemslist
-      );
+      checkTurn(player, this.item, this.won, this.exit, this.$parent.kongregate, this.itemslist);
     }, 100);
 
     this.timer1 = setInterval(() => {
-      checkTurn(
-        this.item,
-        player,
-        this.won,
-        this.exit,
-        this.$parent.kongregate,
-        this.itemslist
-      );
+      checkTurn(this.item, player, this.won, this.exit, this.$parent.kongregate, this.itemslist);
     }, 100);
   },
   beforeDestroy() {

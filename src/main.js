@@ -20,7 +20,7 @@ Vue.prototype.changelog = changelog
 Vue.prototype.itemslist = itemslist
 Vue.prototype.images = []
 
-Vue.prototype.beta = false
+Vue.prototype.beta = true
 
 new Vue({
   render: h => h(App),

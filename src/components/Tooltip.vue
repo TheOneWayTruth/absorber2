@@ -1,25 +1,14 @@
 <template>
   <transition name="fade">
-    <div v-if="create" v-show="show" class="wiste">
-      <div v-if="ctrl">
-        <h2 class="title">{{ item.name }}</h2>
-        <b>Stats:</b>
-        <Statslist :item="filtred(item)" />
-      </div>
-      <div v-else-if="shift">
-        <h2 class="title">{{ item.name }}</h2>
-        <b>Description:</b>
-        <hr />
-        <Ability
-          class="basic"
-          style="white-space: normal; width: 200px; height: auto"
-          :pid="'description'"
-          :val="item.description"
-        />
-      </div>
-      <div v-else>
-        <h2 class="title">{{ item.name }}</h2>
-        <div v-if="type == 'item'">
+    <div v-if="show && item != null" class="wiste">
+      <div v-if="type != 'text'">
+        <div v-if="ctrl">
+          <h2 class="title">{{ item.name }}</h2>
+          <b>Stats:</b>
+          <Statslist :item="filtred(item)" />
+        </div>
+        <div v-else-if="shift">
+          <h2 class="title">{{ item.name }}</h2>
           <b>Description:</b>
           <hr />
           <Ability
@@ -28,19 +17,37 @@
             :pid="'description'"
             :val="item.description"
           />
-          <div v-if="item.special != null">
-            <b>Special:</b>
+        </div>
+        <div v-else>
+          <h2 class="title">{{ item.name }}</h2>
+          <div v-if="type == 'item'">
+            <b>Description:</b>
             <hr />
             <Ability
               class="basic"
               style="white-space: normal; width: 200px; height: auto"
-              :pid="'crit'"
-              :val="item.special"
+              :pid="'description'"
+              :val="item.description"
             />
+            <div v-if="item.special != null">
+              <b>Special:</b>
+              <hr />
+              <Ability
+                class="basic"
+                style="white-space: normal; width: 200px; height: auto"
+                :pid="'crit'"
+                :val="item.special"
+              />
+            </div>
           </div>
+          <b v-if="Object.keys(item.gain).length !== 0">Gain:</b>
+          <Statslist :item="item.gain" />
         </div>
-        <b v-if="Object.keys(item.gain).length !== 0">Gain:</b>
-        <Statslist :item="item.gain" />
+      </div>
+      <div v-else>
+        <div class="title">{{ title }}</div>
+        <hr v-show="title != null" />
+        <div>{{ item }}</div>
       </div>
     </div>
   </transition>
@@ -57,8 +64,12 @@ export default {
   },
   props: {
     item: {
-      type: Object,
+      type: [Object, String],
       required: true,
+    },
+    title: {
+      type: String,
+      required: false,
     },
     ctrl: {
       type: Boolean,
@@ -76,14 +87,11 @@ export default {
   },
   data() {
     return {
-      create: false,
       show: false,
       elistender: null,
       llistender: null,
       mlistender: null,
-      target: null,
-      x: 0,
-      y: 0,
+      lastcord: [0, 0, 0, 0],
     };
   },
   methods: {
@@ -111,72 +119,82 @@ export default {
 
       return ob;
     },
-    setReal() {
-      let el = this;
-      setTimeout(function () {
-        let eposy = 0;
-        let eposx = 0;
-        try {
-          eposy =
-            500 < el.x
-              ? el.target.left - 250
-              : el.target.left + el.target.width + 10;
+    calculatePosition(change, e) {
+      let posy, posx, targetwidth, targetheight;
+      if (change) {
+        this.show = true;
+      }
 
-          eposx =
-            350 < el.y
-              ? el.target.bottom - el.$el.scrollHeight
-              : el.target.top + 10;
+      //check if is loaded from moseevent
+      if (e != undefined) {
+        posy = e.target.getBoundingClientRect().left;
+        posx = e.target.getBoundingClientRect().top;
+        targetwidth = e.target.offsetWidth;
+        targetheight = e.target.offsetHeight;
+        //Save last cursor position
+        this.lastcord = [posy, posx, targetwidth, targetheight];
+      } else {
+        //Load last cursor position
+        posy = this.lastcord[0];
+        posx = this.lastcord[1];
+        targetwidth = this.lastcord[2];
+        targetheight = this.lastcord[3];
+      }
 
-          el.$el.style.top = eposx + "px";
-          el.$el.style.left = eposy + "px";
-          el.show = true;
-        } catch {}
-      }, 20);
-    },
-    setDimensions(e, el) {
-      el.create = true;
-      el.target = e.target.getBoundingClientRect();
-      el.x = e.clientX;
-      el.y = e.clientY;
-      this.setReal();
-    },
-  },
-  watch: {
-    shift: function (val) {
-      this.setReal();
-    },
-    ctrl: function (val) {
-      this.setReal();
+      this.$nextTick(() => {
+        let element = this.$el;
+        if (element.style != undefined) {
+          let width = element.offsetWidth;
+
+          //Check if Tooltip bigger than screen
+          if (posy + width >= window.innerWidth - 300) {
+            //Turn tooltip left
+            element.style.left = posy - width + "px";
+          } else {
+            //Turn tooltip right
+            element.style.left = posy + targetwidth + "px";
+          }
+
+          let height = element.offsetHeight;
+          //Check if Tooltip bigger then bottom
+          if (posx + height >= window.innerHeight - 20) {
+            element.style.top = posx - height + targetheight / 2 + "px";
+          } else {
+            element.style.top = posx + targetheight / 2 + "px";
+          }
+          if (posx + targetheight / 2 + height >= window.innerHeight - 20) {
+            let diff = posx + targetheight / 2 + height - window.innerHeight + 20;
+            element.style.top = posx + targetheight / 2 - diff + "px";
+          }
+        }
+      });
     },
   },
   mounted() {
     let el = this;
 
-    this.elistender = function (e) {
-      el.setDimensions(e, el);
+    this.llistender = () => {
+      this.show = false;
     };
 
-    this.mlistender = function (e) {
-      el.setDimensions(e, el);
-    };
-
-    this.llistender = function () {
-      el.show = false;
-      el.create = false;
+    this.elistender = (e) => {
+      this.calculatePosition(true, e);
     };
 
     $(this.$el).parent().first().on("mouseenter", this.elistender);
-
-    $(this.$el).parent().first().on("mousemove", this.mlistender);
-
     $(this.$el).parent().first().on("mouseleave", this.llistender);
   },
   beforeDestroy() {
     $(this.$el).parent().first().off("mouseenter", this.elistender);
-
-    $(this.$el).parent().first().off("mousemove", this.mlistender);
-
     $(this.$el).parent().first().off("mouseleave", this.llistender);
+  },
+  watch: {
+    shift: function (val) {
+      this.calculatePosition(false);
+    },
+    ctrl: function (val) {
+      this.calculatePosition(false);
+    },
   },
 };
 </script>
@@ -195,22 +213,6 @@ export default {
   z-index: 10;
   width: 230px;
   overflow: hidden;
-}
-
-.iconz {
-  float: left;
-  margin-right: 10px;
-  height: 32px;
-  width: 32px;
-}
-
-.lol {
-  line-height: 32px;
-}
-
-.skiste {
-  border: 1px solid black;
-  background: red;
 }
 
 .fade-enter-active,
