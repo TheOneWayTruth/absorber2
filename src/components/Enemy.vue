@@ -19,32 +19,31 @@
         <div>
           <div>{{ min }} / {{ max }}</div>
           <br />
-          <img
-            v-if="value.id"
-            class="image"
-            :src="getImage"
-            :alt="value.name"
-          />
+          <img v-if="value.id" class="image" :src="getImage" :alt="value.name" />
           <br />
           {{ value.name }}
         </div>
       </div>
-      <Tooltip
+      <TooltipItem
+        :type="'enemy'"
+        :item="value"
         v-show="!dragging"
         :shift="$parent.$parent.shiftIsPressed"
         :ctrl="$parent.$parent.cntrlIsPressed"
-        :item="value"
       />
     </div>
   </div>
 </template>
 
 <script>
-import Tooltip from "./Tooltip.vue";
+import TooltipItem from "./Tooltip.vue";
 
 import { respawn } from "./functions";
 export default {
-  name: "Enemy",
+  name: "EnemyItem",
+  components: {
+    TooltipItem,
+  },
   props: {
     value: {
       type: Object,
@@ -58,9 +57,6 @@ export default {
       type: Number,
       required: true,
     },
-  },
-  components: {
-    Tooltip,
   },
   data() {
     return {

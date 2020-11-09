@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div v-show="show" class="wiste">
-      <div class="title">{{item}}</div>
+      <div class="title">{{ item }}</div>
       <div v-html="maketext(item)"></div>
     </div>
   </transition>
@@ -12,80 +12,86 @@ export default {
   props: {
     item: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       show: false,
       elistender: null,
-      llistender: null
+      llistender: null,
     };
   },
   methods: {
     maketext(l) {
       try {
-        let tipp = this.tippslist.find(x => x.id === l);
+        let tipp = this.tippslist.find((x) => x.id === l);
         let out = "<div><b>Description:</b><hr/>" + tipp.desc + "</div>";
         out += "<div><b>Calculation:</b><hr/>" + tipp.form + "</div>";
         return out;
       } catch {
         try {
-          let chois = choise.find(x => x.id === l);
+          let chois = choise.find((x) => x.id === l);
           let out = "";
           out += "<div><b>Description:</b><hr/>" + chois.desc + "</div><br>";
           return out;
         } catch {}
         return "<div><b>" + l + "</b></div>";
       }
-    }
+    },
   },
   mounted() {
-    let el = this;
-    this.elistender = function(e) {
-      el.show = true;
-      let eposy =
-        e.target.getBoundingClientRect().left + e.target.offsetWidth + 10;
-      let eposx = e.target.getBoundingClientRect().top;
+    this.elistender = (e) => {
+      this.show = true;
 
-      el.$el.style.top = eposx + "px";
-      el.$el.style.left = eposy + "px";
+      let posy = e.target.getBoundingClientRect().left;
+      let posx = e.target.getBoundingClientRect().top;
 
-      setTimeout(function() {
-        try {
-          let height = el.$el.offsetHeight;
-          if (eposx + height >= 600) {
-            el.$el.style.top = eposx - height + e.target.offsetHeight + "px";
+      let targetwidth = e.target.offsetWidth;
+      let targetheight = e.target.offsetHeight;
+
+      this.$nextTick(() => {
+        let element = this.$el;
+        if (element.style != undefined) {
+          let width = element.offsetWidth;
+
+          //Check if Tooltip bigger than screen
+          if (posy + width >= window.innerWidth - 300) {
+            //Turn tooltip left
+            element.style.left = posy - width + "px";
+          } else {
+            //Turn tooltip right
+            element.style.left = posy + targetwidth + "px";
           }
-        } catch {}
-      }, 50);
+
+          let height = element.offsetHeight;
+          //Check if Tooltip bigger then bottom
+          if (posx + height >= window.innerHeight - 20) {
+            element.style.top = posx - height + targetheight / 2 + "px";
+          } else {
+            element.style.top = posx + targetheight / 2 + "px";
+          }
+          if (posx + targetheight / 2 + height >= window.innerHeight - 20) {
+            let diff = posx + targetheight / 2 + height - window.innerHeight + 20;
+            element.style.top = posx + targetheight / 2 - diff + "px";
+          }
+        }
+      });
     };
 
-    this.llistender = function() {
-      el.show = false;
+    this.llistender = () => {
+      this.show = false;
     };
 
-    $(this.$el)
-      .parent()
-      .first()
-      .on("mouseenter", this.elistender);
+    $(this.$el).parent().first().on("mouseenter", this.elistender);
 
-    $(this.$el)
-      .parent()
-      .first()
-      .on("mouseleave", this.llistender);
+    $(this.$el).parent().first().on("mouseleave", this.llistender);
   },
   beforeDestroy() {
-    $(this.$el)
-      .parent()
-      .first()
-      .off("mouseenter", this.elistender);
+    $(this.$el).parent().first().off("mouseenter", this.elistender);
 
-    $(this.$el)
-      .parent()
-      .first()
-      .off("mouseleave", this.llistender);
-  }
+    $(this.$el).parent().first().off("mouseleave", this.llistender);
+  },
 };
 </script>
 

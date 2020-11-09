@@ -515,28 +515,32 @@ function checkEnemyDeath(target, attacker, func, res, kong, itemlist) {
     }
   }
 
-  if (attacker.boss) {
+  try {
+    if (attacker.boss) {
+      if (target.highscore[attacker.id] == undefined || target.highscore[attacker.id] == -1) {
+        target.highscore[attacker.id] = 999999999;
+      }
+      if (target.time < target.highscore[attacker.id]) {
+        target.highscore[attacker.id] = target.time
+      }
 
+      log.push(`<div class="death">${attacker.name} was killed in ${target.time}</div>`);
 
-    if (target.highscore[attacker.id] == undefined || target.highscore[attacker.id] == -1) {
-      target.highscore[attacker.id] = 999999999;
+      if (kong != null && kong != undefined) {
+        try {
+          kong.stats.submit(attacker.id, target.time);
+        } catch { }
+      }
+
+      attacker.id == getLastBoss(target) && func();
+    } else {
+      log.push(`<div class="death">${target.name} killed  ${attacker.name}</div>`);
     }
-    if (target.time < target.highscore[attacker.id]) {
-      target.highscore[attacker.id] = target.time
-    }
-
-    log.push(`<div class="death">${attacker.name} was killed in ${target.time}</div>`);
-
-    if (kong != null && kong != undefined) {
-      try {
-        kong.stats.submit(attacker.id, target.time);
-      } catch { }
-    }
-
-    attacker.id == getLastBoss(target) && func();
-  } else {
-    log.push(`<div class="death">${target.name} killed  ${attacker.name}</div>`);
+  } catch (e) {
+    console.log("some error with boss")
+    console.error(e)
   }
+
   respawn(attacker);
   checkCleared(target, attacker, res);
 }

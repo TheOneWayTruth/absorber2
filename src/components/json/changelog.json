@@ -1,5 +1,13 @@
 [
     {
+        "version": "1.9",
+        "info": [
+            "better tooltips",
+            "maybe fixed unlimited enemie fight",
+            "maybe fixed broken counter"
+        ]
+    },
+    {
         "version": "1.8",
         "info": [
             "added Items",

@@ -1,46 +1,47 @@
 <template>
   <div>
-    <div :class="{ bspeed: this.speed, abp:this.ab }" class="myProgress" ref="myProgress">
-      <span :key="rounded" class="middle">{{rounded}}</span>
-      <div class="myBar" ref="myBar" :class="{ fspeed: this.speed, abar:this.ab }"></div>
+    <div :class="{ bspeed: this.speed, abp: this.ab }" class="myProgress" ref="myProgress">
+      <span :key="rounded" class="middle">{{ rounded }}</span>
+      <div class="myBar" ref="myBar" :class="{ fspeed: this.speed, abar: this.ab }"></div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: "ProgressbarItem",
   props: {
     max: {
       type: Number,
-      required: true
+      required: true,
     },
     val: {
       type: Number,
-      required: true
+      required: true,
     },
     speed: {
       type: Boolean,
-      required: false
+      required: false,
     },
     ab: {
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
   watch: {
-    val: function(newVal, oldVal) {
+    val: function (newVal, oldVal) {
       let pz = (this.val / this.max) * 100;
       this.$refs.myBar.style.width = pz + "%";
-    }
+    },
   },
   computed: {
-    rounded: function() {
+    rounded: function () {
       return Math.round((this.val + Number.EPSILON) * 100) / 100;
-    }
+    },
   },
   mounted() {
     this.$refs.myBar.style.width = (this.val / this.max) * 100 + "%";
-  }
+  },
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ beta: beta }" id="app">
+  <div :class="{ beta: beta }">
     <Index />
   </div>
 </template>
