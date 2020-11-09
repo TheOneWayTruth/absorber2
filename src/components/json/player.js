@@ -23,13 +23,11 @@ var player = {
     "auto": false,
     "lastEnemy": "bat",
     "version": 1.8,
-    "highscore": {},
     "tutorial": 0,
     "prestige": 0,
     "points": 0,
     "go": false,
     "order": [],
-    "companion": null
 }
 
 export default player;

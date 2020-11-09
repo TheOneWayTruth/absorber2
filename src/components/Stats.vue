@@ -95,30 +95,6 @@
           </div>
         </transition>
       </div>
-      <div v-if="getAnyElement($parent.player.highscore) > 0">
-        <div @click="openhigh = !openhigh" class="kiste dark title">
-          <span>Highscore</span>
-          <span v-if="openhigh" style="float: right">▼</span>
-          <span v-else style="float: right">▲</span>
-        </div>
-        <transition name="fade">
-          <div v-show="openhigh" class="kiste innerbox">
-            <div :key="key + value" v-for="(key, value) in $parent.player.highscore">
-              <div v-show="key > 0">
-                <div class="valbox">
-                  <span class="val">{{ key }}</span>
-                  <img class="icon" v-if="value" :src="getImgUrl(value)" />
-                </div>
-                <Tooltip
-                  :type="'text'"
-                  :title="getRealEnemyName(value)"
-                  :item="'killed in ' + key + ' seconds'"
-                />
-              </div>
-            </div>
-          </div>
-        </transition>
-      </div>
       <div v-if="getAnyElement($parent.player.allcount) > 0">
         <div @click="openall = !openall" class="kiste dark title">
           <span>All Scores</span>
@@ -163,42 +139,6 @@
               :title="displayeskills2(value).name"
               :item="displayeskills2(value).desc"
             />
-          </div>
-        </div>
-      </div>
-      <div v-if="companions.length > 0">
-        <div style="width: 650px" @click="opencomp = !opencomp" class="kiste dark title">
-          <span>Kongpanions</span>
-          <span v-if="opencomp" style="float: right">▼</span>
-          <span v-else style="float: right">▲</span>
-        </div>
-        <div style="width: 650px" v-show="opencomp" class="kiste innerbox">
-          <div
-            :class="{
-              scomp: isSelectedC(value.id),
-              comp: !isSelectedC(value.id),
-            }"
-            @click="selectComp(value.id)"
-            :key="key"
-            v-for="(value, key) in companions"
-          >
-            <img width="110" :src="value.normal_icon_url_small" />
-            <div>{{ value.name }}</div>
-            <div :key="value.name + d" v-for="(d, l) in getboni(value.tags).gain">
-              <div v-if="l == 'chance'">
-                <Ability
-                  style="max-width: 90px"
-                  :key="ld + ld"
-                  v-for="(dl, ld) in d"
-                  class="chance"
-                  :val="dl"
-                  :pid="ld"
-                />
-              </div>
-              <div v-else>
-                <Ability style="max-width: 90px" class="basic" :val="d" :pid="l" />
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -328,16 +268,12 @@ export default {
     return {
       dchance: null,
       deffects: null,
-      dhighscore: null,
-      companions: [],
       openbase: true,
       openchance: true,
       openeffects: true,
       openres: true,
-      openhigh: true,
       openall: true,
       openskills: true,
-      opencomp: true,
       openitems: true,
       clouduse: false,
     };
@@ -404,13 +340,6 @@ export default {
         return true;
       }
     },
-    getboni(tags) {
-      return getboni(tags);
-    },
-    selectComp(e) {
-      this.$parent.player.companion = e;
-      this.$parent.recalculate(this.$parent.player);
-    },
     EquipItem(item) {
       if (this.$parent.player.items.includes(item)) {
         removeItemOnce(this.$parent.player.items, item);
@@ -421,9 +350,6 @@ export default {
         this.$parent.player.items.push(item);
       }
       this.$parent.recalculate(this.$parent.player);
-    },
-    isSelectedC(comp) {
-      return !(this.$parent.player.companion != comp);
     },
     isEqupied(item) {
       if (this.$parent.player.items != undefined && item != undefined) {
@@ -533,7 +459,6 @@ export default {
       delete pl.go;
       delete pl.unlocked;
       delete pl.allcount;
-      delete pl.companion;
       delete pl.skills;
       delete pl.time;
       delete pl.items;
@@ -547,40 +472,9 @@ export default {
       delete pl.resistance;
       delete pl.version;
       delete pl.effects;
-      delete pl.highscore;
       delete pl.chance;
       return pl;
     },
-  },
-  created() {
-    let boot = setInterval(() => {
-      if (this.$parent.kongregate != null) {
-        if (!this.$parent.kongregate.services.isGuest() || this.beta) {
-          let user = "";
-          if (this.beta) {
-            if (this.$parent.player.name == "showmethemoney") {
-              user = "dirkf17";
-            } else {
-              user = this.$parent.player.name;
-            }
-          } else {
-            user = this.$parent.kongregate.services.getUsername();
-          }
-
-          let el = this;
-          let link = "https://api.kongregate.com/api/kongpanions.json?username=" + user;
-          $.getJSON(link, function (data) {
-            if (data.success) {
-              el.companions = data.kongpanions;
-              if (el.$parent.player.companion == 0) {
-                el.$parent.player.companion = el.companions[0].id;
-              }
-            }
-          });
-        }
-        clearInterval(boot);
-      }
-    }, 500);
   },
 };
 </script>

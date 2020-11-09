@@ -105,7 +105,6 @@ export default {
       enemy: null,
       htimer: null,
       recovery: true,
-      kongregate: null,
       overlay: false,
       skilltree: false,
       cntrlIsPressed: false,
@@ -160,13 +159,6 @@ export default {
       player.maxitems = 1;
 
       //Get Stats from save
-
-      if (!isEmpty(pl.highscore)) {
-        player.highscore = pl.highscore;
-      } else {
-        player.highscore = {};
-      }
-
       if (pl.allcount != undefined) {
         if (!isEmpty(pl.allcount)) {
           player.allcount = pl.allcount;
@@ -191,7 +183,6 @@ export default {
       player.order = pl.order;
       player.prestige = pl.prestige;
       player.name = pl.name;
-      player.companion = pl.companion;
       player.auto = pl.auto;
       player.time = pl.time;
       player.lastEnemy = pl.lastEnemy;
@@ -220,11 +211,6 @@ export default {
         this.SingleCalculation(c, player);
       }
 
-      if (null != player.companion) {
-        let a = getboni(this.complist.find((a) => a.id == player.companion).tags);
-        this.SingleCalculation(a, player);
-      }
-
       if (null != player.items) {
         for (let d of player.items) {
           let e = this.itemslist.find((a) => a.id === d);
@@ -246,13 +232,6 @@ export default {
         player.order.push(this.enemieslist[player.order.length].id);
       }
 
-      // Submit current Highscores
-      for (let b in player.highscore) {
-        if (0 < player.highscore[b] && null != this.kongregate) {
-          this.kongregate.stats.submit(b, player.highscore[b]);
-        }
-      }
-
       //Calculation Points via Prestige and Skills
       player.points = player.prestige - player.skills.length;
 
@@ -271,11 +250,9 @@ export default {
       respawn(this.player);
       this.loading = false;
 
-      let el = this;
-      setTimeout(() => {
-        el.$refs.dun.$forceUpdate();
-        6 != el.player.tutorial && el.tutorial();
-      }, 100);
+      this.$nextTick(() => {
+        this.$refs.dun.$forceUpdate();
+      });
     },
     openTab(t) {
       this.active = t;
@@ -419,7 +396,6 @@ export default {
       this.player.skills = [];
       this.player.prestige = -1;
       this.player.allcount = {};
-      this.player.highscore = {};
       this.reset(this.player);
       this.overlay = false;
       this.save();
@@ -544,60 +520,22 @@ export default {
         });
       this.preloaded = true;
     },
-    loginInUsingPlayFab() {
-      if (this.kongregate.services.getUserId() == 0) {
-        return;
-      }
-
-      let el = this;
-      PlayFab.settings.titleId = "857F6";
-
-      var request = {
-        TitleId: PlayFab.settings.titleId,
-        AuthTicket: this.kongregate.services.getGameAuthToken(),
-        KongregateId: this.kongregate.services.getUserId(),
-        CreateAccount: true,
-      };
-
-      PlayFabClientSDK.LoginWithKongregate(
-        request,
-        function (v) {
-          el.PlayFab = v.data.SessionTicket;
-          el.cloud = true;
-        },
-        function (v) {}
-      );
-    },
   },
   mounted() {
-    let el = this,
-      kongregate;
-    try {
-      kongregateAPI.loadAPI(function () {
-        kongregate = kongregateAPI.getAPI();
-        el.kongregate = kongregate;
-        el.loginInUsingPlayFab();
-      });
-    } catch {}
-
     this.preloading();
 
-    $.getJSON("https://api.kongregate.com/api/kongpanions/index.json", function (data) {
-      if (data.success) el.complist = data.kongpanions;
-    }).done(function () {
-      null == localStorage.getItem("saveGame")
-        ? el.recalculate(el.player)
-        : el.recalculate(JSON.parse(localStorage.getItem("saveGame")));
+    null == localStorage.getItem("saveGame")
+      ? this.recalculate(this.player)
+      : this.recalculate(JSON.parse(localStorage.getItem("saveGame")));
+
+    window.addEventListener("keydown", () => {
+      "17" == event.which && (this.cntrlIsPressed = true);
+      "16" == event.which && (this.shiftIsPressed = true);
     });
 
-    window.addEventListener("keydown", function () {
-      "17" == event.which && (el.cntrlIsPressed = true);
-      "16" == event.which && (el.shiftIsPressed = true);
-    });
-
-    window.addEventListener("keyup", function () {
-      el.cntrlIsPressed = false;
-      el.shiftIsPressed = false;
+    window.addEventListener("keyup", () => {
+      this.cntrlIsPressed = false;
+      this.shiftIsPressed = false;
     });
 
     setInterval(() => {
@@ -610,30 +548,19 @@ export default {
 
     this.htimer = setInterval(() => {
       if (this.recovery && !this.loading) {
-        this.resetStatus(this.player);
-        this.player.cspeed = 0;
-        if (
-          this.player.clife + this.player.recovery + this.player.regeneration <=
-          this.player.life
-        ) {
-          let add = 0;
-          if (this.player.recovery > 0) {
-            add += this.player.recovery;
-          }
-          if (this.player.regeneration > 0) {
-            add += this.player.regeneration;
-          }
-          if (add < 1) {
-            add = 1;
-          }
-          if (0 > this.player.clife) {
-            this.player.clife = add;
-          } else {
-            this.player.clife += add;
-          }
+        let player = this.player;
+        this.resetStatus(player);
+        player.cspeed = 0;
+
+        let add = 0;
+        player.recovery > 0 && (add += player.recovery);
+        player.regeneration > 0 && (add += player.regeneration);
+        add < 1 && (add = 1);
+        if (player.clife + add <= player.life) {
+          player.clife += add;
         } else {
-          this.player.clife = this.player.life;
-          this.player.auto && this.setNextEnemy();
+          player.clife = player.life;
+          player.auto && setNextEnemy();
         }
       }
     }, 1000);
