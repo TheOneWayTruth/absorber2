@@ -22,6 +22,7 @@ Vue.prototype.images = []
 
 Vue.prototype.beta = false
 
+
 new Vue({
   render: h => h(App),
 }).$mount('#app')
