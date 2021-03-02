@@ -9,7 +9,7 @@
             @click="openTab('fight')"
             class="btn"
           >
-            <img :src="require('@/assets/icons/auto.png')" alt="fight" />
+            <img :src="require('@/assets/icons/auto.webp')" alt="fight" />
             Fight
           </button>
           <button
@@ -17,7 +17,7 @@
             @click="openTab('dungeon')"
             class="btn"
           >
-            <img :src="require('@/assets/icons/cave.png')" alt="dungeon" />
+            <img :src="require('@/assets/icons/cave.webp')" alt="dungeon" />
             Dungeon
           </button>
           <button
@@ -25,7 +25,7 @@
             @click="openTab('stats')"
             class="btn"
           >
-            <img :src="require('@/assets/icons/hero.png')" alt="stats" />
+            <img :src="require('@/assets/icons/hero.webp')" alt="stats" />
             Stats
           </button>
           <button
@@ -33,11 +33,11 @@
             @click="openTab('log')"
             class="btn"
           >
-            <img :src="require('@/assets/icons/log.png')" alt="log" />
+            <img :src="require('@/assets/icons/log.webp')" alt="log" />
             Log
           </button>
           <button class="btn" v-show="this.enemy != null" @click="exitFight()">
-            <img :src="require('@/assets/icons/door.png')" alt="back" />
+            <img :src="require('@/assets/icons/door.webp')" alt="back" />
             Exit
           </button>
 
@@ -78,13 +78,13 @@
       class="justfullsize"
       :style="{
         backgroundImage:
-          'url(' + require('@/assets/icons/background.png') + ')',
+          'url(' + require('@/assets/icons/background.webp') + ')',
       }"
       v-else
     >
       <div class="loadmid">
         <div class="rotate">
-          <img :src="require('@/assets/icons/hero.png')" alt="loading" />
+          <img :src="require('@/assets/icons/hero.webp')" alt="loading" />
         </div>
         <span style="font-size: 40px">LOADING</span>
       </div>
@@ -528,36 +528,36 @@ export default {
       for (let a of this.bufflist) p.status[a] = 0;
     },
     preloading() {
-      var requireImage = require.context("../assets/enemys/", false, /\.png$/);
+      var requireImage = require.context("../assets/enemys/", false, /\.webp$/);
 
       for (let a of this.enemieslist)
         this.images.push({
           id: a.id,
-          img: requireImage("./" + a.id + ".png"),
+          img: requireImage("./" + a.id + ".webp"),
         });
 
-      requireImage = require.context("../assets/skills/", false, /\.png$/);
+      requireImage = require.context("../assets/skills/", false, /\.webp$/);
 
       for (let a of this.tippslist)
         this.images.push({
           id: a.id,
-          img: requireImage("./" + a.id + ".png"),
+          img: requireImage("./" + a.id + ".webp"),
         });
 
-      requireImage = require.context("../assets/buffs/", false, /\.png$/);
+      requireImage = require.context("../assets/buffs/", false, /\.webp$/);
 
       for (let a of this.bufflist)
         this.images.push({
           id: "b" + a,
-          img: requireImage("./" + a + ".png"),
+          img: requireImage("./" + a + ".webp"),
         });
 
-      requireImage = require.context("../assets/items/", false, /\.png$/);
+      requireImage = require.context("../assets/items/", false, /\.webp$/);
 
       for (let a of this.itemslist)
         this.images.push({
           id: a.id,
-          img: requireImage("./" + a.id + ".png"),
+          img: requireImage("./" + a.id + ".webp"),
         });
       this.preloaded = true;
     },

@@ -2,7 +2,8 @@
   <div
     class="fullsize"
     :style="{
-      backgroundImage: 'url(' + require('@/assets/icons/background3.png') + ')',
+      backgroundImage:
+        'url(' + require('@/assets/icons/background3.webp') + ')',
     }"
   >
     <input autocorrect="off" class="faker" v-model="$parent.player.name" />
@@ -15,7 +16,7 @@
         Prestige
         <img
           class="icons"
-          :src="require('@/assets/icons/star.png')"
+          :src="require('@/assets/icons/star.webp')"
           alt="reset"
         />
       </button>
@@ -27,7 +28,7 @@
         Skills
         <img
           class="icons"
-          :src="require('@/assets/icons/skills.png')"
+          :src="require('@/assets/icons/skills.webp')"
           alt="skills"
         />
       </button>
@@ -180,7 +181,7 @@
               <img
                 class="icon"
                 :src="
-                  require('@/assets/skills/' + displayeskills(value) + '.png')
+                  require('@/assets/skills/' + displayeskills(value) + '.webp')
                 "
               />
               <span class="val">{{ key }}</span>
@@ -246,7 +247,7 @@
           <h2>FILE</h2>
           <div style="display: flex">
             <button class="btn half" @click="exportSave">
-              <img :src="require('@/assets/icons/export.png')" alt="Export" />
+              <img :src="require('@/assets/icons/export.webp')" alt="Export" />
               <span>Export</span>
             </button>
 
@@ -260,7 +261,10 @@
                   flex-wrap: wrap;
                 "
               >
-                <img :src="require('@/assets/icons/import.png')" alt="Import" />
+                <img
+                  :src="require('@/assets/icons/import.webp')"
+                  alt="Import"
+                />
                 <span>Import</span>
               </label>
             </button>
@@ -273,12 +277,12 @@
           <h2>LOCAL</h2>
           <div style="display: flex">
             <button class="btn half" @click="loadGame">
-              <img :src="require('@/assets/icons/load.png')" alt="Load" />
+              <img :src="require('@/assets/icons/load.webp')" alt="Load" />
               <span>Load</span>
             </button>
 
             <button class="btn half" @click="saveGame">
-              <img :src="require('@/assets/icons/save.png')" alt="Save" />
+              <img :src="require('@/assets/icons/save.webp')" alt="Save" />
               <span>Save</span>
             </button>
           </div>
@@ -288,12 +292,15 @@
           <h2>RESET</h2>
           <div style="display: flex">
             <button class="btn half" @click="opensoft">
-              <img :src="require('@/assets/icons/softreset.png')" alt="reset" />
+              <img
+                :src="require('@/assets/icons/softreset.webp')"
+                alt="reset"
+              />
               <span>Soft</span>
             </button>
 
             <button class="btn half" @click="openreset">
-              <img :src="require('@/assets/icons/reset.png')" alt="reset" />
+              <img :src="require('@/assets/icons/reset.webp')" alt="reset" />
               <span>Hard</span>
             </button>
           </div>

@@ -2,7 +2,7 @@
   <div
     class="rows nearlyfullsize"
     :style="{
-      backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
+      backgroundImage: 'url(' + require('@/assets/icons/background.webp') + ')',
     }"
   >
     <div class="rowside box">
