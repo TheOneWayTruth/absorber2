@@ -8,17 +8,19 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "core-js": "^3.7.0",
+    "core-js": "^3.9.1",
     "vue": "^2.6.12",
-    "vue-google-adsense": "^1.9.2"
+    "vue-google-adsense": "^1.9.2",
+    "vue-script2": "^2.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.8",
-    "@vue/cli-plugin-eslint": "^4.5.8",
-    "@vue/cli-service": "^4.5.8",
+    "@vue/cli-plugin-babel": "^4.5.11",
+    "@vue/cli-plugin-eslint": "^4.5.11",
+    "@vue/cli-service": "^4.5.11",
     "babel-eslint": "^10.0.3",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^6.2.2",
+    "eslint": "^7.21.0",
+    "eslint-plugin-vue": "^7.7.0",
+    "vue-cli-plugin-compression": "~1.0.3",
     "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {
@@ -31,11 +33,11 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-unused-declaration": "on",
-      "no-console": "off",
-      "no-unused-vars": "off",
-      "no-empty": "off",
-      "no-undef": "off"
+      "no-console": 0,
+      "no-unused-vars": 0,
+      "no-empty": 0,
+      "no-undef": 1,
+      "no-prototype-builtins": 0
     },
     "parserOptions": {
       "parser": "babel-eslint"

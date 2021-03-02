@@ -1,3 +1,4 @@
+/*eslint no-prototype-builtins: "error"*/
 import { log, dmgind } from "./gloabals.js";
 
 function RoundToInt(e) {
@@ -366,7 +367,7 @@ export function checkTurn(target, attacker, disfi, exit, itemlist) {
       try {
         dmgind.shift();
         log.push(`<div class="chances">${target.name} attacks second time<div>`);
-        checkCrit(crit, scrit, mcrit, attacker, target, block);
+        checkCrit(crit, attacker, target, block);
       } catch { }
     }, 500);
 

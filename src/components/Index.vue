@@ -99,8 +99,7 @@ import Log from "./Log.vue";
 import Fight from "./Fight.vue";
 import Progressbar from "./Progressbar.vue";
 import Overlay from "./Overlay.vue";
-
-import { RoundAll, getboni } from "./displayfunc";
+/*eslint no-prototype-builtins: "error"*/
 import {
   respawn,
   getLast,
