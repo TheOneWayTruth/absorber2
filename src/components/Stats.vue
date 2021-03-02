@@ -7,13 +7,29 @@
   >
     <input autocorrect="off" class="faker" v-model="$parent.player.name" />
     <div style="display: flex">
-      <button v-show="$parent.player.go" class="btn" @click="$parent.displayfinish">
+      <button
+        v-show="$parent.player.go"
+        class="btn"
+        @click="$parent.displayfinish"
+      >
         Prestige
-        <img class="icons" :src="require('@/assets/icons/star.png')" alt="reset" />
+        <img
+          class="icons"
+          :src="require('@/assets/icons/star.png')"
+          alt="reset"
+        />
       </button>
-      <button v-show="$parent.player.prestige > 0" class="btn" @click="openskilltree">
+      <button
+        v-show="$parent.player.prestige > 0"
+        class="btn"
+        @click="openskilltree"
+      >
         Skills
-        <img class="icons" :src="require('@/assets/icons/skills.png')" alt="skills" />
+        <img
+          class="icons"
+          :src="require('@/assets/icons/skills.png')"
+          alt="skills"
+        />
       </button>
     </div>
     <div class="flex">
@@ -103,7 +119,10 @@
         </div>
         <transition name="fade">
           <div v-show="openhigh" class="kiste innerbox">
-            <div :key="key + value" v-for="(key, value) in $parent.player.highscore">
+            <div
+              :key="key + value"
+              v-for="(key, value) in $parent.player.highscore"
+            >
               <div v-show="key > 0">
                 <div class="valbox">
                   <span class="val">{{ key }}</span>
@@ -127,7 +146,10 @@
         </div>
 
         <div v-show="openall" class="kiste innerbox">
-          <div :key="key + value" v-for="(key, value) in $parent.player.allcount">
+          <div
+            :key="key + value"
+            v-for="(key, value) in $parent.player.allcount"
+          >
             <div v-show="key > 0">
               <div class="valbox">
                 <span class="val">{{ key }}</span>
@@ -150,11 +172,16 @@
         </div>
 
         <div v-show="openskills" class="kiste fux">
-          <div :key="value" v-for="(key, value) in groupSkills($parent.player.skills)">
+          <div
+            :key="value"
+            v-for="(key, value) in groupSkills($parent.player.skills)"
+          >
             <div class="valbox">
               <img
                 class="icon"
-                :src="require('@/assets/skills/' + displayeskills(value) + '.png')"
+                :src="
+                  require('@/assets/skills/' + displayeskills(value) + '.png')
+                "
               />
               <span class="val">{{ key }}</span>
             </div>
@@ -166,44 +193,12 @@
           </div>
         </div>
       </div>
-      <div v-if="companions.length > 0">
-        <div style="width: 650px" @click="opencomp = !opencomp" class="kiste dark title">
-          <span>Kongpanions</span>
-          <span v-if="opencomp" style="float: right">▼</span>
-          <span v-else style="float: right">▲</span>
-        </div>
-        <div style="width: 650px" v-show="opencomp" class="kiste innerbox">
-          <div
-            :class="{
-              scomp: isSelectedC(value.id),
-              comp: !isSelectedC(value.id),
-            }"
-            @click="selectComp(value.id)"
-            :key="key"
-            v-for="(value, key) in companions"
-          >
-            <img width="110" :src="value.normal_icon_url_small" />
-            <div>{{ value.name }}</div>
-            <div :key="value.name + d" v-for="(d, l) in getboni(value.tags).gain">
-              <div v-if="l == 'chance'">
-                <Ability
-                  style="max-width: 90px"
-                  :key="ld + ld"
-                  v-for="(dl, ld) in d"
-                  class="chance"
-                  :val="dl"
-                  :pid="ld"
-                />
-              </div>
-              <div v-else>
-                <Ability style="max-width: 90px" class="basic" :val="d" :pid="l" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div v-if="$parent.player.prestige > 5">
-        <div style="width: 650px" @click="openitems = !openitems" class="kiste dark title">
+        <div
+          style="width: 650px"
+          @click="openitems = !openitems"
+          class="kiste dark title"
+        >
           <span>Items</span>
           <span v-if="openitems" style="float: right">▼</span>
           <span v-else style="float: right">▲</span>
@@ -225,7 +220,12 @@
           </div>
           <div :key="value + key" v-for="(value, key) in getLocked()">
             <div class="comp" v-if="value.req != undefined">
-              <img class="locked" width="110" :src="getImgUrl(value.id)" :alt="value.name" />
+              <img
+                class="locked"
+                width="110"
+                :src="getImgUrl(value.id)"
+                :alt="value.name"
+              />
 
               <progress
                 class="wprog"
@@ -233,7 +233,10 @@
                 :value="$parent.player.allcount[value.req.id]"
                 style="width: 100px"
               ></progress>
-              <Tooltip :type="'text'" :item="getPercent(value) + '% until Item is unlocked'" />
+              <Tooltip
+                :type="'text'"
+                :item="getPercent(value) + '% until Item is unlocked'"
+              />
             </div>
           </div>
         </div>
@@ -250,7 +253,12 @@
             <button class="btn half" @click="importSave">
               <label
                 for="import"
-                style="cursor: pointer; display: flex; justify-content: center; flex-wrap: wrap"
+                style="
+                  cursor: pointer;
+                  display: flex;
+                  justify-content: center;
+                  flex-wrap: wrap;
+                "
               >
                 <img :src="require('@/assets/icons/import.png')" alt="Import" />
                 <span>Import</span>
@@ -281,14 +289,22 @@
             </button>
           </div>
           <div v-else>
-            <span style="border: 1px solid red" v-show="beta">Dosnt work in Beta</span>
+            <span style="border: 1px solid red" v-show="beta"
+              >Dosnt work in Beta</span
+            >
             <div style="display: flex">
               <button class="btn load half" @click="Cloudload">
-                <img :src="require('@/assets/icons/cloudload.png')" alt="load" />
+                <img
+                  :src="require('@/assets/icons/cloudload.png')"
+                  alt="load"
+                />
                 <span>Load</span>
               </button>
               <button class="btn save half" @click="Cloudsave">
-                <img :src="require('@/assets/icons/cloudsave.png')" alt="save" />
+                <img
+                  :src="require('@/assets/icons/cloudsave.png')"
+                  alt="save"
+                />
                 <span>Save</span>
               </button>
             </div>
@@ -329,7 +345,6 @@ export default {
       dchance: null,
       deffects: null,
       dhighscore: null,
-      companions: [],
       openbase: true,
       openchance: true,
       openeffects: true,
@@ -378,7 +393,9 @@ export default {
     },
     getPercent(e) {
       if (this.$parent.player.allcount != undefined) {
-        let p = Math.round((this.$parent.player.allcount[e.req.id] * 100) / e.req.count);
+        let p = Math.round(
+          (this.$parent.player.allcount[e.req.id] * 100) / e.req.count
+        );
         if (p >= 100) {
           p = 100;
         }
@@ -389,7 +406,9 @@ export default {
     getUnlocked() {
       let el = this;
       if (el.$parent.player.unlocked != undefined) {
-        return this.itemslist.filter((x) => el.$parent.player.unlocked.includes(x.id));
+        return this.itemslist.filter((x) =>
+          el.$parent.player.unlocked.includes(x.id)
+        );
       } else {
         return false;
       }
@@ -397,7 +416,9 @@ export default {
     getLocked() {
       let el = this;
       if (el.$parent.player.unlocked != undefined) {
-        let list = this.itemslist.filter((x) => !el.$parent.player.unlocked.includes(x.id));
+        let list = this.itemslist.filter(
+          (x) => !el.$parent.player.unlocked.includes(x.id)
+        );
 
         return list.sort((a, b) => this.getPercent(b) - this.getPercent(a));
       } else {
@@ -407,23 +428,18 @@ export default {
     getboni(tags) {
       return getboni(tags);
     },
-    selectComp(e) {
-      this.$parent.player.companion = e;
-      this.$parent.recalculate(this.$parent.player);
-    },
     EquipItem(item) {
       if (this.$parent.player.items.includes(item)) {
         removeItemOnce(this.$parent.player.items, item);
-      } else if (this.$parent.player.items.length >= this.$parent.player.maxitems) {
+      } else if (
+        this.$parent.player.items.length >= this.$parent.player.maxitems
+      ) {
         this.$parent.player.items.shift();
         this.$parent.player.items.push(item);
       } else {
         this.$parent.player.items.push(item);
       }
       this.$parent.recalculate(this.$parent.player);
-    },
-    isSelectedC(comp) {
-      return !(this.$parent.player.companion != comp);
     },
     isEqupied(item) {
       if (this.$parent.player.items != undefined && item != undefined) {
@@ -447,7 +463,9 @@ export default {
       if (this.beta) {
         copyToClipboard(JSON.stringify(this.$parent.player));
       } else {
-        copyToClipboard(this.reverse(btoa(this.reverse(JSON.stringify(this.$parent.player)))));
+        copyToClipboard(
+          this.reverse(btoa(this.reverse(JSON.stringify(this.$parent.player))))
+        );
       }
 
       this.$parent.log.push("<div>Save was downloaded</div>");
@@ -533,7 +551,6 @@ export default {
       delete pl.go;
       delete pl.unlocked;
       delete pl.allcount;
-      delete pl.companion;
       delete pl.skills;
       delete pl.time;
       delete pl.items;
@@ -551,36 +568,6 @@ export default {
       delete pl.chance;
       return pl;
     },
-  },
-  created() {
-    let boot = setInterval(() => {
-      if (this.$parent.kongregate != null) {
-        if (!this.$parent.kongregate.services.isGuest() || this.beta) {
-          let user = "";
-          if (this.beta) {
-            if (this.$parent.player.name == "showmethemoney") {
-              user = "dirkf17";
-            } else {
-              user = this.$parent.player.name;
-            }
-          } else {
-            user = this.$parent.kongregate.services.getUsername();
-          }
-
-          let el = this;
-          let link = "https://api.kongregate.com/api/kongpanions.json?username=" + user;
-          $.getJSON(link, function (data) {
-            if (data.success) {
-              el.companions = data.kongpanions;
-              if (el.$parent.player.companion == 0) {
-                el.$parent.player.companion = el.companions[0].id;
-              }
-            }
-          });
-        }
-        clearInterval(boot);
-      }
-    }, 500);
   },
 };
 </script>

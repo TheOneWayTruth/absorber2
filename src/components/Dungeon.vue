@@ -24,8 +24,16 @@
               @click="hideUnhide()"
               :class="{ active: !this.hidden }"
             >
-              <img v-if="this.hidden" :src="require('@/assets/icons/visible.png')" alt="visible" />
-              <img v-else :src="require('@/assets/icons/hidden.png')" alt="hidden" />
+              <img
+                v-if="this.hidden"
+                :src="require('@/assets/icons/visible.png')"
+                alt="visible"
+              />
+              <img
+                v-else
+                :src="require('@/assets/icons/hidden.png')"
+                alt="hidden"
+              />
               <span v-if="this.hidden">Hide Finished</span>
               <span v-else>Show Finished</span>
             </button>
@@ -37,7 +45,11 @@
               <img :src="require('@/assets/icons/auto.png')" alt="auto" />
               <span>Autofight</span>
             </button>
-            <button v-show="$parent.player.prestige >= 3" class="btn dun" @click="resetOrder()">
+            <button
+              v-show="$parent.player.prestige >= 3"
+              class="btn dun"
+              @click="resetOrder()"
+            >
               <img :src="require('@/assets/icons/order.png')" alt="auto" />
               <span>Reset Order</span>
             </button>
@@ -47,7 +59,12 @@
                 :src="require('@/assets/icons/search.png')"
                 alt="search"
               />
-              <span v-show="searchv != ''" @click="closesearch" class="closesearch">X</span>
+              <span
+                v-show="searchv != ''"
+                @click="closesearch"
+                class="closesearch"
+                >X</span
+              >
               <input autocorrect="off" class="faker" v-model="searchv" />
             </div>
           </div>
@@ -57,19 +74,18 @@
         <div>
           <div class="flex">
             <div :key="key" v-for="(value, key) in getPrestigeEnemys()">
-              <Enemy :min="getcount(value.id)" :max="getLast(value.max)" :value="value" />
+              <Enemy
+                :min="getcount(value.id)"
+                :max="getLast(value.max)"
+                :value="value"
+              />
             </div>
           </div>
         </div>
       </div>
       <div class="text">
-<<<<<<< Updated upstream
-        Any similarity with other books, games or movies is just coincidence and results from your
-        fertile imagination.
-=======
         Any similarity with other books, games or movies is just coincidence and
         results from your fertile imagination.
->>>>>>> Stashed changes
       </div>
     </div>
   </div>
@@ -103,7 +119,8 @@ export default {
       this.$parent.player.order = this.enemieslist.map(({ id: a }) => a);
     },
     getcount(id) {
-      this.$parent.player.counter[id] == null && (this.$parent.player.counter[id] = 0);
+      this.$parent.player.counter[id] == null &&
+        (this.$parent.player.counter[id] = 0);
       return this.$parent.player.counter[id];
     },
     getLast(v) {
@@ -129,7 +146,11 @@ export default {
         if (el.searchv != "" && !x.name.match(new RegExp(el.searchv, "i"))) {
           return false;
         }
-        if (x.prestige != null && x.prestige != undefined && el.search != x.name) {
+        if (
+          x.prestige != null &&
+          x.prestige != undefined &&
+          el.search != x.name
+        ) {
           return el.$parent.player.prestige >= x.prestige;
         }
         return true;

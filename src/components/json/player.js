@@ -29,7 +29,6 @@ var player = {
     "points": 0,
     "go": false,
     "order": [],
-    "companion": null
 }
 
 export default player;

@@ -279,11 +279,7 @@ function checkRotTurn(a) {
   return false;
 }
 
-<<<<<<< Updated upstream
-export function checkTurn(target, attacker, disfi, exit, kong, itemlist) {
-=======
 export function checkTurn(target, attacker, disfi, exit, itemlist) {
->>>>>>> Stashed changes
 
   if (!checkRotTurn(target)) {
     checkRegeneration(target);
@@ -295,20 +291,12 @@ export function checkTurn(target, attacker, disfi, exit, itemlist) {
 
   checkDot(target, attacker);
 
-<<<<<<< Updated upstream
-  if (!checkDeath(target, attacker, disfi, exit, kong, itemlist)) {
-=======
   if (!checkDeath(target, attacker, disfi, exit, itemlist)) {
->>>>>>> Stashed changes
     return;
   }
 
   if (checkStunTurn(target)) {
-<<<<<<< Updated upstream
-    checkDeath(target, attacker, disfi, exit, kong, itemlist);
-=======
     checkDeath(target, attacker, disfi, exit, itemlist);
->>>>>>> Stashed changes
     return;
   }
 
@@ -321,22 +309,14 @@ export function checkTurn(target, attacker, disfi, exit, itemlist) {
 
   if (checkDodge(target, attacker)) {
     log.push(`<div class="chances">${attacker.name} <span style="color:brown">dodged</span></div>`);
-<<<<<<< Updated upstream
-    checkDeath(target, attacker, disfi, exit, kong, itemlist);
-=======
     checkDeath(target, attacker, disfi, exit, itemlist);
->>>>>>> Stashed changes
     return;
   }
 
   if (target.status.silence <= 0) {
     if (null != target.chance) {
       if (checkInstakill(target, attacker)) {
-<<<<<<< Updated upstream
-        checkDeath(target, attacker, disfi, exit, kong, itemlist);
-=======
         checkDeath(target, attacker, disfi, exit, itemlist);
->>>>>>> Stashed changes
         return;
       }
 
@@ -394,11 +374,7 @@ export function checkTurn(target, attacker, disfi, exit, itemlist) {
 
   target.version != null && animateObject("animated");
 
-<<<<<<< Updated upstream
-  checkDeath(target, attacker, disfi, exit, kong, itemlist);
-=======
   checkDeath(target, attacker, disfi, exit, itemlist);
->>>>>>> Stashed changes
 }
 
 function checkCounter(target, attacker) {
@@ -469,11 +445,7 @@ function animateObject(b) {
   }, 500);
 }
 
-<<<<<<< Updated upstream
-function checkEnemyDeath(target, attacker, func, res, kong, itemlist) {
-=======
 function checkEnemyDeath(target, attacker, func, res, itemlist) {
->>>>>>> Stashed changes
   if (attacker.chance != null) {
     if (checkChance(attacker.chance.resurrect)) {
       respawn(attacker);
@@ -554,12 +526,6 @@ function checkEnemyDeath(target, attacker, func, res, itemlist) {
 
       log.push(`<div class="death">${attacker.name} was killed in ${target.time}</div>`);
 
-      if (kong != null && kong != undefined) {
-        try {
-          kong.stats.submit(attacker.id, target.time);
-        } catch { }
-      }
-
       attacker.id == getLastBoss(target) && func();
     } else {
       log.push(`<div class="death">${target.name} killed  ${attacker.name}</div>`);
@@ -613,17 +579,10 @@ export function isEmpty(obj) {
   return JSON.stringify(obj) === JSON.stringify({});
 }
 
-<<<<<<< Updated upstream
-function checkDeath(target, attacker, func, res, kong, itemlist) {
-  if (target.version != null) {
-    if (attacker.clife <= 0) {
-      checkEnemyDeath(target, attacker, func, res, kong, itemlist);
-=======
 function checkDeath(target, attacker, func, res, itemlist) {
   if (target.version != null) {
     if (attacker.clife <= 0) {
       checkEnemyDeath(target, attacker, func, res, itemlist);
->>>>>>> Stashed changes
       return false;
     }
     if (target.clife <= 0) {
@@ -636,11 +595,7 @@ function checkDeath(target, attacker, func, res, itemlist) {
       return false;
     }
     if (target.clife <= 0) {
-<<<<<<< Updated upstream
-      checkEnemyDeath(attacker, target, func, res, kong, itemlist);
-=======
       checkEnemyDeath(attacker, target, func, res, itemlist);
->>>>>>> Stashed changes
       return false;
     }
   }
