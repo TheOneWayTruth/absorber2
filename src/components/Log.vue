@@ -84,7 +84,7 @@
             style="right: 20px"
             href="https://www.patreon.com/schlauewurst"
           >
-            <img :src="require('@/assets/icons/patreon.jpg')" alt="patreon" />
+            <img :src="require('@/assets/icons/patreon.webp')" alt="patreon" />
           </a>
           <a
             class="abs"
