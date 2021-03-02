@@ -54,13 +54,21 @@
 </template>
 
 <script>
-import Ability from "./Ability.vue";
-import Statslist from "./Statslist.vue";
 export default {
   name: "Tooltip",
   components: {
-    Ability,
-    Statslist,
+    Ability: () =>
+      import(
+        /* webpackPrefetch: true */
+        /* webpackChunkName: "tooltips" */
+        /* webpackMode: "lazy" */ "./Ability.vue"
+      ),
+    Statslist: () =>
+      import(
+        /* webpackPrefetch: true */
+        /* webpackChunkName: "tooltips" */
+        /* webpackMode: "lazy" */ "./Statslist.vue"
+      ),
   },
   props: {
     item: {
@@ -163,7 +171,8 @@ export default {
             element.style.top = posx + targetheight / 2 + "px";
           }
           if (posx + targetheight / 2 + height >= window.innerHeight - 20) {
-            let diff = posx + targetheight / 2 + height - window.innerHeight + 20;
+            let diff =
+              posx + targetheight / 2 + height - window.innerHeight + 20;
             element.style.top = posx + targetheight / 2 - diff + "px";
           }
         }

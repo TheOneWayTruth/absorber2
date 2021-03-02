@@ -16,12 +16,15 @@
 </template>
 
 <script>
-import Ability from "./Ability.vue";
-
 export default {
   name: "Statslist",
   components: {
-    Ability,
+    Ability: () =>
+      import(
+        /* webpackPrefetch: true */
+        /* webpackChunkName: "tooltips" */
+        /* webpackMode: "lazy" */ "./Ability.vue"
+      ),
   },
   props: {
     item: {

@@ -4,7 +4,7 @@
       <img
         v-if="this.background != ''"
         class="bc"
-        :src="require('@/assets/icons/' + this.background + '.png')"
+        :src="require('@/assets/icons/' + this.background + '.webp')"
       />
       <div class="overlay" :style="'background-color:' + this.color">
         <div class="box" :style="'left:' + this.place">
@@ -14,11 +14,16 @@
               style="image-rendering: pixelated"
               width="200px;"
               v-if="this.img != ''"
-              :src="require('@/assets/' + this.img + '.png')"
+              :src="require('@/assets/' + this.img + '.webp')"
             />
           </div>
           <div class="flex" style="width: 100%">
-            <div class="btn" :key="k" v-for="(thing, k) in obj" @click="thing.func">
+            <div
+              class="btn"
+              :key="k"
+              v-for="(thing, k) in obj"
+              @click="thing.func"
+            >
               <div>{{ thing.text }}</div>
             </div>
           </div>
@@ -30,7 +35,8 @@
         <div
           class="kiste"
           :style="{
-            backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
+            backgroundImage:
+              'url(' + require('@/assets/icons/background.webp') + ')',
           }"
         >
           <button class="btn close" @click="close">X</button>
@@ -82,17 +88,25 @@
 
 <script>
 import skilltree from "./json/skilltree.json";
-import Accordion from "./Accordion.vue";
-import { getParentById, getNodeById } from "./functions.js";
+import { getNodeById } from "./functions.js";
 
 export default {
   name: "OverlayItem",
   components: {
-    Accordion,
+    Accordion: () =>
+      import(
+        /* webpackPrefetch: true */
+        /* webpackChunkName: "tooltips" */
+        /* webpackMode: "lazy" */ "./Accordion.vue"
+      ),
   },
   methods: {
     chooseskill(s) {
-      if (!this.choosen(s) && this.$parent.player.points > 0 && !this.canBeChoosen(s)) {
+      if (
+        !this.choosen(s) &&
+        this.$parent.player.points > 0 &&
+        !this.canBeChoosen(s)
+      ) {
         this.$parent.player.skills.push(s);
         this.$parent.player.points--;
         this.$parent.recalculate(this.$parent.player);

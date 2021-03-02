@@ -1,5 +1,11 @@
 [
     {
+        "version": "1.9.1",
+        "info": [
+            "made Crazygames version"
+        ]
+    },
+    {
         "version": "1.9",
         "info": [
             "better tooltips",

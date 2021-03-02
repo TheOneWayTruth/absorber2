@@ -9,10 +9,14 @@
 </template>
 
 <script>
-import Tooltip2 from "./Tooltip2.vue";
 export default {
   components: {
-    Tooltip2,
+    Tooltip2: () =>
+      import(
+        /* webpackChunkName: "tooltips" */
+        /* webpackMode: "lazy" */
+        /* webpackPrefetch: true */ "./Tooltip2.vue"
+      ),
   },
   props: {
     pid: {

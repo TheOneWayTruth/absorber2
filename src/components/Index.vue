@@ -9,7 +9,7 @@
             @click="openTab('fight')"
             class="btn"
           >
-            <img :src="require('@/assets/icons/auto.png')" alt="fight" />
+            <img :src="require('@/assets/icons/auto.webp')" alt="fight" />
             Fight
           </button>
           <button
@@ -17,19 +17,27 @@
             @click="openTab('dungeon')"
             class="btn"
           >
-            <img :src="require('@/assets/icons/cave.png')" alt="dungeon" />
+            <img :src="require('@/assets/icons/cave.webp')" alt="dungeon" />
             Dungeon
           </button>
-          <button :class="{ active: this.active == 'stats' }" @click="openTab('stats')" class="btn">
-            <img :src="require('@/assets/icons/hero.png')" alt="stats" />
+          <button
+            :class="{ active: this.active == 'stats' }"
+            @click="openTab('stats')"
+            class="btn"
+          >
+            <img :src="require('@/assets/icons/hero.webp')" alt="stats" />
             Stats
           </button>
-          <button :class="{ active: this.active == 'log' }" @click="openTab('log')" class="btn">
-            <img :src="require('@/assets/icons/log.png')" alt="log" />
+          <button
+            :class="{ active: this.active == 'log' }"
+            @click="openTab('log')"
+            class="btn"
+          >
+            <img :src="require('@/assets/icons/log.webp')" alt="log" />
             Log
           </button>
           <button class="btn" v-show="this.enemy != null" @click="exitFight()">
-            <img :src="require('@/assets/icons/door.png')" alt="back" />
+            <img :src="require('@/assets/icons/door.webp')" alt="back" />
             Exit
           </button>
 
@@ -39,11 +47,19 @@
           <Stats ref="stats" v-show="this.active == 'stats'" />
           <Dungeon ref="dun" v-show="this.active == 'dungeon'" />
           <Log v-show="this.active == 'log'" />
-          <Fight v-if="this.enemy != null" v-show="this.active == 'fight'" :item="this.enemy" />
+          <Fight
+            v-if="this.enemy != null"
+            v-show="this.active == 'fight'"
+            :item="this.enemy"
+          />
         </div>
       </div>
       <div class="status">
-        <div v-show="value > 0" :key="key" v-for="(value, key) in this.player.status">
+        <div
+          v-show="value > 0"
+          :key="key"
+          v-for="(value, key) in this.player.status"
+        >
           <img :src="getImgUrl('b' + key)" :alt="key" />
           <span>{{ value }}</span>
         </div>
@@ -61,13 +77,14 @@
     <div
       class="justfullsize"
       :style="{
-        backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
+        backgroundImage:
+          'url(' + require('@/assets/icons/background.webp') + ')',
       }"
       v-else
     >
       <div class="loadmid">
         <div class="rotate">
-          <img :src="require('@/assets/icons/hero.png')" alt="loading" />
+          <img :src="require('@/assets/icons/hero.webp')" alt="loading" />
         </div>
         <span style="font-size: 40px">LOADING</span>
       </div>
@@ -82,9 +99,17 @@ import Log from "./Log.vue";
 import Fight from "./Fight.vue";
 import Progressbar from "./Progressbar.vue";
 import Overlay from "./Overlay.vue";
+import bufflist from "./json/bufflist.json";
 
-import { RoundAll, getboni } from "./displayfunc";
-import { respawn, getLast, getNodeById, getLastBoss, hasDuplicates, isEmpty } from "./functions.js";
+import { getboni } from "./displayfunc";
+import {
+  respawn,
+  getLast,
+  getNodeById,
+  getLastBoss,
+  hasDuplicates,
+  isEmpty,
+} from "./functions.js";
 import { log } from "./gloabals.js";
 
 export default {
@@ -105,7 +130,7 @@ export default {
       enemy: null,
       htimer: null,
       recovery: true,
-      kongregate: null,
+      crazygames: null,
       overlay: false,
       skilltree: false,
       cntrlIsPressed: false,
@@ -114,7 +139,6 @@ export default {
       complist: [],
       loading: true,
       cloud: false,
-      PlayFab: 0,
     };
   },
   methods: {
@@ -221,7 +245,9 @@ export default {
       }
 
       if (null != player.companion) {
-        let a = getboni(this.complist.find((a) => a.id == player.companion).tags);
+        let a = getboni(
+          this.complist.find((a) => a.id == player.companion).tags
+        );
         this.SingleCalculation(a, player);
       }
 
@@ -235,7 +261,11 @@ export default {
       }
 
       //Reset order if new Enemys
-      if (pl.order != undefined && pl.order.length > 0 && !hasDuplicates(player.order)) {
+      if (
+        pl.order != undefined &&
+        pl.order.length > 0 &&
+        !hasDuplicates(player.order)
+      ) {
         player.order = pl.order;
       } else {
         player.order = this.enemieslist.map(({ id: a }) => a);
@@ -244,13 +274,6 @@ export default {
       //Reset push new enemies into order
       while (this.enemieslist.length > player.order.length) {
         player.order.push(this.enemieslist[player.order.length].id);
-      }
-
-      // Submit current Highscores
-      for (let b in player.highscore) {
-        if (0 < player.highscore[b] && null != this.kongregate) {
-          this.kongregate.stats.submit(b, player.highscore[b]);
-        }
       }
 
       //Calculation Points via Prestige and Skills
@@ -467,7 +490,10 @@ export default {
       if (this.player.prestige >= 3) {
         for (let ind of this.player.order) {
           let e = this.enemieslist.find((e) => e.id == ind);
-          if (this.player.counter[e.id] < this.getLast(e.max, this.player.prestige)) {
+          if (
+            this.player.counter[e.id] <
+            this.getLast(e.max, this.player.prestige)
+          ) {
             this.enemy = respawn(e);
             break;
           }
@@ -475,7 +501,10 @@ export default {
       } else {
         let last = this.enemieslist.find((e) => e.id == this.player.lastEnemy);
         if (last != undefined) {
-          if (this.player.counter[last.id] < this.getLast(last.max, this.player.prestige)) {
+          if (
+            this.player.counter[last.id] <
+            this.getLast(last.max, this.player.prestige)
+          ) {
             this.enemy = respawn(last);
           } else {
             this.enemy = null;
@@ -508,87 +537,51 @@ export default {
       }
     },
     resetStatus(p) {
-      for (let a of this.bufflist) p.status[a] = 0;
+      for (let a of bufflist) p.status[a] = 0;
     },
     preloading() {
-      var requireImage = require.context("../assets/enemys/", false, /\.png$/);
+      var requireImage = require.context("../assets/enemys/", false, /\.webp$/);
 
       for (let a of this.enemieslist)
         this.images.push({
           id: a.id,
-          img: requireImage("./" + a.id + ".png"),
+          img: requireImage("./" + a.id + ".webp"),
         });
 
-      requireImage = require.context("../assets/skills/", false, /\.png$/);
+      requireImage = require.context("../assets/skills/", false, /\.webp$/);
 
       for (let a of this.tippslist)
         this.images.push({
           id: a.id,
-          img: requireImage("./" + a.id + ".png"),
+          img: requireImage("./" + a.id + ".webp"),
         });
 
-      requireImage = require.context("../assets/buffs/", false, /\.png$/);
+      requireImage = require.context("../assets/buffs/", false, /\.webp$/);
 
-      for (let a of this.bufflist)
+      for (let a of bufflist)
         this.images.push({
           id: "b" + a,
-          img: requireImage("./" + a + ".png"),
+          img: requireImage("./" + a + ".webp"),
         });
 
-      requireImage = require.context("../assets/items/", false, /\.png$/);
+      requireImage = require.context("../assets/items/", false, /\.webp$/);
 
       for (let a of this.itemslist)
         this.images.push({
           id: a.id,
-          img: requireImage("./" + a.id + ".png"),
+          img: requireImage("./" + a.id + ".webp"),
         });
       this.preloaded = true;
     },
-    loginInUsingPlayFab() {
-      if (this.kongregate.services.getUserId() == 0) {
-        return;
-      }
-
-      let el = this;
-      PlayFab.settings.titleId = "857F6";
-
-      var request = {
-        TitleId: PlayFab.settings.titleId,
-        AuthTicket: this.kongregate.services.getGameAuthToken(),
-        KongregateId: this.kongregate.services.getUserId(),
-        CreateAccount: true,
-      };
-
-      PlayFabClientSDK.LoginWithKongregate(
-        request,
-        function (v) {
-          el.PlayFab = v.data.SessionTicket;
-          el.cloud = true;
-        },
-        function (v) {}
-      );
-    },
   },
   mounted() {
-    let el = this,
-      kongregate;
-    try {
-      kongregateAPI.loadAPI(function () {
-        kongregate = kongregateAPI.getAPI();
-        el.kongregate = kongregate;
-        el.loginInUsingPlayFab();
-      });
-    } catch {}
-
     this.preloading();
+    this.crazysdk.init();
+    let el = this;
 
-    $.getJSON("https://api.kongregate.com/api/kongpanions/index.json", function (data) {
-      if (data.success) el.complist = data.kongpanions;
-    }).done(function () {
-      null == localStorage.getItem("saveGame")
-        ? el.recalculate(el.player)
-        : el.recalculate(JSON.parse(localStorage.getItem("saveGame")));
-    });
+    null == localStorage.getItem("saveGame")
+      ? el.recalculate(el.player)
+      : el.recalculate(JSON.parse(localStorage.getItem("saveGame")));
 
     window.addEventListener("keydown", function () {
       "17" == event.which && (el.cntrlIsPressed = true);
