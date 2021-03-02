@@ -100,11 +100,17 @@
 </template>
 
 <script>
-import Enemy from "./Enemy.vue";
 import { getLast } from "./functions";
 export default {
   name: "DungeonItem",
-  components: { Enemy },
+  components: {
+    Enemy: () =>
+      import(
+        /* webpackPrefetch: true */
+        /* webpackChunkName: "enemy" */
+        /* webpackMode: "lazy" */ "./Enemy.vue"
+      ),
+  },
   data() {
     return {
       dragSrcEl: null,
