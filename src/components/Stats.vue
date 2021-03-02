@@ -270,14 +270,8 @@
         <input ref="import" id="import" accept="text/txt" type="file" />
 
         <div class="boxbox">
-          <label v-if="$parent.cloud" class="switch">
-            <input v-model="clouduse" type="checkbox" />
-            <h2 class="slider round">
-              <span v-if="!clouduse">LOCAL</span><span v-else>CLOUD</span>
-            </h2>
-          </label>
-          <h2 v-else>LOCAL</h2>
-          <div v-if="!clouduse" style="display: flex">
+          <h2>LOCAL</h2>
+          <div style="display: flex">
             <button class="btn half" @click="loadGame">
               <img :src="require('@/assets/icons/load.png')" alt="Load" />
               <span>Load</span>
@@ -287,27 +281,6 @@
               <img :src="require('@/assets/icons/save.png')" alt="Save" />
               <span>Save</span>
             </button>
-          </div>
-          <div v-else>
-            <span style="border: 1px solid red" v-show="beta"
-              >Dosnt work in Beta</span
-            >
-            <div style="display: flex">
-              <button class="btn load half" @click="Cloudload">
-                <img
-                  :src="require('@/assets/icons/cloudload.png')"
-                  alt="load"
-                />
-                <span>Load</span>
-              </button>
-              <button class="btn save half" @click="Cloudsave">
-                <img
-                  :src="require('@/assets/icons/cloudsave.png')"
-                  alt="save"
-                />
-                <span>Save</span>
-              </button>
-            </div>
           </div>
         </div>
 
@@ -331,8 +304,7 @@
 </template>
 
 <script>
-import { debug } from "./gloabals.js";
-import { copyToClipboard, getClipBoard, removeItemOnce } from "./functions";
+import { copyToClipboard, removeItemOnce } from "./functions";
 import { getboni } from "./displayfunc";
 import Ability from "./Ability.vue";
 import Tooltip from "./Tooltip.vue";
@@ -354,30 +326,9 @@ export default {
       openskills: true,
       opencomp: true,
       openitems: true,
-      clouduse: false,
     };
   },
   methods: {
-    Cloudload() {
-      let el = this;
-      PlayFabClientSDK.GetUserData({
-        SessionTicket: el.$parent.PlayFab,
-      }).then(function (x) {
-        el.$parent.player = JSON.parse(x.data.Data.save.Value);
-        console.log("loaded");
-      });
-    },
-    Cloudsave() {
-      let el = this;
-
-      var d = {
-        Data: { save: JSON.stringify(this.$parent.player) },
-      };
-
-      PlayFabClientSDK.UpdateUserData(d).then(function (x) {
-        console.log("saved");
-      });
-    },
     getAnyElement(obj) {
       var sum = 0;
       for (var el in obj) {

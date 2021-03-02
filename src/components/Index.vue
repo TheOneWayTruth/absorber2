@@ -134,10 +134,7 @@ export default {
       cntrlIsPressed: false,
       shiftIsPressed: false,
       log: log,
-      complist: [],
       loading: true,
-      cloud: false,
-      PlayFab: 0,
     };
   },
   methods: {

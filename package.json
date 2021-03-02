@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.7.0",
-    "vue": "^2.6.12"
+    "vue": "^2.6.12",
+    "vue-google-adsense": "^1.9.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.8",
