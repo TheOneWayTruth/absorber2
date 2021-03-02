@@ -453,9 +453,8 @@ function checkEnemyDeath(target, attacker, func, res, kong, itemlist) {
     }
   }
 
-  if (target.version != null) {
-    animateObject("die");
-  }
+  target.version != null && animateObject("die");
+
 
   for (let a in attacker.gain)
     if (

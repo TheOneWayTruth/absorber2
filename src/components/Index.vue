@@ -1,56 +1,31 @@
 <template>
-  <div>
+  <div id="main">
     <div v-if="!loading && preloaded">
       <div>
-        <div class="fixed">
-          <button
-            :class="{ active: this.active == 'fight' }"
-            v-if="this.enemy != null"
-            @click="openTab('fight')"
-            class="btn"
-          >
-            <img :src="require('@/assets/icons/auto.png')" alt="fight" />
-            Fight
-          </button>
-          <button
-            :class="{ active: this.active == 'dungeon' }"
-            @click="openTab('dungeon')"
-            class="btn"
-          >
-            <img :src="require('@/assets/icons/cave.png')" alt="dungeon" />
-            Dungeon
-          </button>
-          <button :class="{ active: this.active == 'stats' }" @click="openTab('stats')" class="btn">
-            <img :src="require('@/assets/icons/hero.png')" alt="stats" />
-            Stats
-          </button>
-          <button :class="{ active: this.active == 'log' }" @click="openTab('log')" class="btn">
-            <img :src="require('@/assets/icons/log.png')" alt="log" />
-            Log
-          </button>
-          <button class="btn" v-show="this.enemy != null" @click="exitFight()">
-            <img :src="require('@/assets/icons/door.png')" alt="back" />
-            Exit
-          </button>
-
-          <div class="time">{{ gettime(player.time) }}</div>
-        </div>
+        <Menue></Menue>
         <div class="box">
           <Stats ref="stats" v-show="this.active == 'stats'" />
-          <Dungeon ref="dun" v-show="this.active == 'dungeon'" />
+          <Dungeon id="dungeon" ref="dun" v-show="this.active == 'dungeon'" />
           <Log v-show="this.active == 'log'" />
-          <Fight v-if="this.enemy != null" v-show="this.active == 'fight'" :item="this.enemy" />
+          <Fight
+            v-if="this.enemy != null"
+            v-show="this.active == 'fight'"
+            :item="this.enemy"
+          />
         </div>
       </div>
       <div class="status">
-        <div v-show="value > 0" :key="key" v-for="(value, key) in this.player.status">
+        <div
+          v-show="value > 0"
+          :key="key"
+          v-for="(value, key) in this.player.status"
+        >
           <img :src="getImgUrl('b' + key)" :alt="key" />
           <span>{{ value }}</span>
         </div>
       </div>
       <Progressbar :max="player.life" :val="player.clife" :ab="true" />
       <Progressbar
-        v-show="this.enemy != null"
         :max="player.speed"
         :val="player.cspeed"
         :speed="true"
@@ -61,7 +36,8 @@
     <div
       class="justfullsize"
       :style="{
-        backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
+        backgroundImage:
+          'url(' + require('@/assets/icons/background.png') + ')',
       }"
       v-else
     >
@@ -82,9 +58,17 @@ import Log from "./Log.vue";
 import Fight from "./Fight.vue";
 import Progressbar from "./Progressbar.vue";
 import Overlay from "./Overlay.vue";
+import Menue from "./Menue";
 
 import { RoundAll, getboni } from "./displayfunc";
-import { respawn, getLast, getNodeById, getLastBoss, hasDuplicates, isEmpty } from "./functions.js";
+import {
+  respawn,
+  getLast,
+  getNodeById,
+  getLastBoss,
+  hasDuplicates,
+  isEmpty,
+} from "./functions.js";
 import { log } from "./gloabals.js";
 
 export default {
@@ -96,6 +80,7 @@ export default {
     Log,
     Overlay,
     Fight,
+    Menue,
   },
   data() {
     return {
@@ -115,6 +100,7 @@ export default {
       loading: true,
       cloud: false,
       PlayFab: 0,
+      dungeonscroll: 0,
     };
   },
   methods: {
@@ -221,7 +207,9 @@ export default {
       }
 
       if (null != player.companion) {
-        let a = getboni(this.complist.find((a) => a.id == player.companion).tags);
+        let a = getboni(
+          this.complist.find((a) => a.id == player.companion).tags
+        );
         this.SingleCalculation(a, player);
       }
 
@@ -235,7 +223,11 @@ export default {
       }
 
       //Reset order if new Enemys
-      if (pl.order != undefined && pl.order.length > 0 && !hasDuplicates(player.order)) {
+      if (
+        pl.order != undefined &&
+        pl.order.length > 0 &&
+        !hasDuplicates(player.order)
+      ) {
         player.order = pl.order;
       } else {
         player.order = this.enemieslist.map(({ id: a }) => a);
@@ -276,9 +268,6 @@ export default {
         el.$refs.dun.$forceUpdate();
         6 != el.player.tutorial && el.tutorial();
       }, 100);
-    },
-    openTab(t) {
-      this.active = t;
     },
     tutorial() {
       let ov = this.$refs.ov.$data;
@@ -451,23 +440,14 @@ export default {
       this.player.skills.push(s.id);
       this.reset();
     },
-    gettime(a) {
-      var b = parseInt(a, 10),
-        c = Math.floor(b / 3600),
-        d = Math.floor((b - 3600 * c) / 60),
-        e = b - 3600 * c - 60 * d;
-      return (
-        10 > c && (c = "0" + c),
-        10 > d && (d = "0" + d),
-        10 > e && (e = "0" + e),
-        0 < c ? c + ":" + d + ":" + e : 0 < d ? d + ":" + e : e
-      );
-    },
     setNextEnemy() {
       if (this.player.prestige >= 3) {
         for (let ind of this.player.order) {
           let e = this.enemieslist.find((e) => e.id == ind);
-          if (this.player.counter[e.id] < this.getLast(e.max, this.player.prestige)) {
+          if (
+            this.player.counter[e.id] <
+            this.getLast(e.max, this.player.prestige)
+          ) {
             this.enemy = respawn(e);
             break;
           }
@@ -475,7 +455,10 @@ export default {
       } else {
         let last = this.enemieslist.find((e) => e.id == this.player.lastEnemy);
         if (last != undefined) {
-          if (this.player.counter[last.id] < this.getLast(last.max, this.player.prestige)) {
+          if (
+            this.player.counter[last.id] <
+            this.getLast(last.max, this.player.prestige)
+          ) {
             this.enemy = respawn(last);
           } else {
             this.enemy = null;
@@ -582,9 +565,12 @@ export default {
 
     this.preloading();
 
-    $.getJSON("https://api.kongregate.com/api/kongpanions/index.json", function (data) {
-      if (data.success) el.complist = data.kongpanions;
-    }).done(function () {
+    $.getJSON(
+      "https://api.kongregate.com/api/kongpanions/index.json",
+      function (data) {
+        if (data.success) el.complist = data.kongpanions;
+      }
+    ).done(function () {
       null == localStorage.getItem("saveGame")
         ? el.recalculate(el.player)
         : el.recalculate(JSON.parse(localStorage.getItem("saveGame")));
@@ -657,10 +643,6 @@ export default {
   z-index: 10;
 }
 
-.box {
-  padding-top: 54px;
-}
-
 .fixed {
   border: 1px solid black;
   width: 100%;
@@ -671,19 +653,11 @@ export default {
   z-index: 2;
 }
 
-.time {
-  margin-right: 10px;
-  margin-left: auto;
-  font-size: 25px;
-  color: white;
-  right: 10px;
-}
-
 .status {
   position: fixed;
   margin: 5px 5px;
   height: 40px;
-  bottom: 60px;
+  top: 70px;
   display: flex;
   flex-direction: row;
 }

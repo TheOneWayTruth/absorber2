@@ -5,65 +5,9 @@
       backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
     }"
   >
-    <div class="rowside box">
-      <h2 class="title">{{ item.name }}</h2>
-      <br />
-      <div>
-        <b>Stats:</b>
-        <hr />
-        <Statslist :item="filtred(item)" />
-      </div>
-      <br />
-      <div>
-        <b>Gain:</b>
-        <hr />
-        <Statslist :item="item.gain" />
-      </div>
-      <br />
-      <div>
-        <b>Description:</b>
-        <hr />
-        <Ability
-          class="basic"
-          style="white-space: normal; width: 200px; height: auto"
-          :pid="'description'"
-          :val="item.description"
-        />
-      </div>
-    </div>
-    <div class="row2 middle">
-      <div>
-        <div class="kasten">
-          <div style="text-align: center; margin: 10px">
-            {{ this.$parent.player.counter[item.id] }}/{{ getLast() }}
-          </div>
-        </div>
-        <div style="width: 200px">
-          <img
-            ref="eimage"
-            v-if="item.id"
-            class="image"
-            id="enemy"
-            :src="getImgUrl(item.id)"
-            :alt="item.name"
-          />
-          <span class="dmgind" :style="'color:' + ind.color" :key="k" v-for="(ind, k) in dmgind">{{
-            ind.text
-          }}</span>
-        </div>
-
-        <div class="flex">
-          <div v-show="value > 0" class="kiste" :key="key" v-for="(value, key) in this.item.status">
-            {{ value }}
-            <img class="icon" :src="getImgUrl('b' + key)" :alt="key" />
-          </div>
-        </div>
-      </div>
-      <Progressbar :val="item.cspeed" :max="item.speed" :speed="true" />
-      <Progressbar :val="item.clife" :max="item.life" />
-    </div>
-    <div class="rowside box">
+    <div v-show="showbox" class="infobox box">
       <div class="flex">
+        <button class="exit" @click="showbox = false">x</button>
         <button
           :class="{ active: this.smallbox == 'stats' }"
           @click="chooseSmallBox('stats')"
@@ -80,47 +24,79 @@
         </button>
       </div>
       <div v-if="this.smallbox == 'stats'">
-        <h2 class="title">{{ $parent.player.name }}</h2>
+        <h2 class="title">{{ item.name }}</h2>
         <br />
-        <b>Stats:</b>
-        <hr />
-        <div class="fleo">
-          <div class="fleo" :key="g" v-for="(n, g) in item.gain">
-            <hr style="width: 200px" v-if="g == 'effects' || g == 'chance' || g == 'resistance'" />
-
-            <div v-if="g != 'effects' && g != 'chance' && g != 'resistance'">
-              <Ability class="basic" :pid="g" :val="$parent.player[g]" />
-            </div>
-            <div v-else-if="g == 'effects'" :key="i" v-for="(k, i) in item.gain.effects">
-              <Ability
-                v-if="$parent.player.effects[i] != undefined"
-                :class="g"
-                :pid="i"
-                :val="$parent.player.effects[i]"
-              />
-            </div>
-            <div v-else-if="g == 'chance'" :key="i" v-for="(k, i) in item.gain.chance">
-              <Ability
-                v-if="$parent.player.chance[i] != undefined"
-                :class="g"
-                :pid="i"
-                :val="$parent.player.chance[i]"
-              />
-            </div>
-            <div v-else-if="g == 'resistance'" :key="i" v-for="(k, i) in item.gain.resistance">
-              <Ability
-                v-if="$parent.player.resistance[i] != undefined"
-                :class="g"
-                :pid="i"
-                :val="$parent.player.resistance[i]"
-              />
-            </div>
-          </div>
+        <div>
+          <b>Stats:</b>
+          <hr />
+          <Statslist :item="filtred(item)" />
+        </div>
+        <br />
+        <div>
+          <b>Gain:</b>
+          <hr />
+          <Statslist :item="item.gain" />
+        </div>
+        <br />
+        <div>
+          <b>Description:</b>
+          <hr />
+          <Ability
+            class="basic"
+            style="white-space: normal; width: 200px; height: auto"
+            :pid="'description'"
+            :val="item.description"
+          />
         </div>
       </div>
       <div v-if="this.smallbox == 'log'">
         <Log :mini="true" />
       </div>
+    </div>
+    <div class="row2 middle">
+      <div>
+        <div class="kasten">
+          <div style="text-align: center; margin: 10px">
+            {{ this.$parent.player.counter[item.id] }}/{{ getLast() }}
+          </div>
+        </div>
+        <div>
+          <img
+            id="enemy"
+            v-if="item.id"
+            class="image"
+            :src="getImgUrl(item.id)"
+            :alt="item.name"
+          />
+          <span
+            class="dmgind"
+            :style="'color:' + ind.color"
+            :key="k"
+            v-for="(ind, k) in dmgind"
+            >{{ ind.text }}</span
+          >
+        </div>
+
+        <div class="flex">
+          <div
+            v-show="value > 0"
+            class="kiste"
+            :key="key"
+            v-for="(value, key) in this.item.status"
+          >
+            {{ value }}
+            <img class="icon" :src="getImgUrl('b' + key)" :alt="key" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <Progressbar :val="item.cspeed" :max="item.speed" :speed="true" />
+        <Progressbar :val="item.clife" :max="item.life" />
+      </div>
+    </div>
+    <button @click="showbox = !showbox" class="info">i</button>
+    <div class="door" @click="exitFight()">
+      <img :src="require('@/assets/icons/door.png')" alt="back" />
     </div>
   </div>
 </template>
@@ -153,6 +129,7 @@ export default {
       timer2: null,
       dmgind: dmgind,
       smallbox: "stats",
+      showbox: false,
     };
   },
   methods: {
@@ -187,7 +164,10 @@ export default {
         }, {});
     },
     exit() {
-      if (this.$parent.player.clife == this.$parent.player.life && this.$parent.player.auto) {
+      if (
+        this.$parent.player.clife == this.$parent.player.life &&
+        this.$parent.player.auto
+      ) {
         this.$parent.setNextEnemy();
       } else {
         this.$parent.enemy = null;
@@ -199,22 +179,40 @@ export default {
       this.$parent.player.auto = false;
       this.$parent.displayfinish();
     },
+    exitFight() {
+      this.$parent.enemy = null;
+      this.$parent.player.auto = false;
+      this.$parent.active = "dungeon";
+    },
   },
   mounted() {
     this.$parent.recovery = false;
     this.$parent.player.counter[this.$parent.enemy.id] == null &&
       (this.$parent.player.counter[this.$parent.enemy.id] = 0);
 
-    let player = this.$parent.player,
-      classlist = this.$refs.eimage.classList;
+    let player = this.$parent.player;
 
     player.lastEnemy = this.item.id;
     this.timer2 = setInterval(() => {
-      checkTurn(player, this.item, this.won, this.exit, this.$parent.kongregate, this.itemslist);
+      checkTurn(
+        player,
+        this.item,
+        this.won,
+        this.exit,
+        this.$parent.kongregate,
+        this.itemslist
+      );
     }, 100);
 
     this.timer1 = setInterval(() => {
-      checkTurn(this.item, player, this.won, this.exit, this.$parent.kongregate, this.itemslist);
+      checkTurn(
+        this.item,
+        player,
+        this.won,
+        this.exit,
+        this.$parent.kongregate,
+        this.itemslist
+      );
     }, 100);
   },
   beforeDestroy() {
@@ -227,13 +225,20 @@ export default {
 </script>
 
 <style scoped>
+.infobox {
+  position: absolute;
+  margin: 10px;
+  padding: 0px;
+  z-index: 1;
+  opacity: 0.98;
+}
+
 .box {
   box-shadow: inset 0 0 4px grey;
   border: 1px solid black;
   padding: 10px;
   background: lightgray;
   min-width: 220px;
-  min-height: 400px;
 }
 .small {
   padding: 2px;
@@ -258,28 +263,21 @@ export default {
 }
 
 .rowside {
-  overflow: auto;
-  height: 420px;
+  overflow-y: scroll;
+  height: 100px;
   float: left;
-  min-width: 240px;
+  min-width: 90vw;
   width: 25%;
   border-radius: 5px;
 }
 
-.row2 {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  height: 420px;
-  float: left;
-
-  width: 50%;
-}
-
 .middle {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
 }
 
 .kiste {
@@ -290,9 +288,10 @@ export default {
   height: 16px;
   margin: 2px;
 }
+
 .image {
   margin: 0px 10px;
-  width: 180px;
+  width: calc(80vw - 50px);
   image-rendering: pixelated;
 }
 
@@ -306,16 +305,19 @@ export default {
 
 @keyframes shake {
   0% {
-    margin: 0px 10px;
+    transform: translate3d(-2px, 0, 0);
   }
+
   25% {
-    margin: 0px 20px;
+    transform: translate3d(2px, 0, 0);
   }
-  75% {
-    margin: 0px 0px;
+
+  50% {
+    transform: translate3d(-4px, 0, 0);
   }
+
   100% {
-    margin: 0px 10px;
+    transform: translate3d(4px, 0, 0);
   }
 }
 
@@ -365,17 +367,36 @@ export default {
 }
 
 .nearlyfullsize {
-  height: calc(100% - 30px);
-  min-height: calc(100vh - 90px);
-  padding: 30px 10px 0px 10px;
-  display: flex;
-  align-content: space-between;
-  align-items: baseline;
+  height: 100vh;
 }
 
-@media only screen and (max-height: 630px) {
-  .nearlyfullsize {
-    align-items: flex-start;
-  }
+.exit {
+  background: red;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 20px;
+}
+
+.info {
+  position: absolute;
+  bottom: 100px;
+  right: 20px;
+  background: lightblue;
+  border-radius: 50%;
+  font-size: 30px;
+  color: white;
+  width: 40px;
+  height: 40px;
+}
+
+.door {
+  bottom: 100px;
+  position: absolute;
+  left: 20px;
+}
+
+.door img {
+  width: 50px;
 }
 </style>

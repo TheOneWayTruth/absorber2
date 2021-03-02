@@ -1,30 +1,51 @@
 <template>
   <div>
+    <div v-if="!mini" class="effects">
+      <button
+        :class="{ active: !this.attacks }"
+        @click="toggleLog('attacks')"
+        class="btn dun"
+      >
+        basic
+      </button>
+      <button
+        :class="{ active: !this.chance }"
+        @click="toggleLog('chance')"
+        class="btn dun"
+      >
+        chance
+      </button>
+      <button
+        :class="{ active: !this.crit }"
+        @click="toggleLog('crit')"
+        class="btn dun"
+      >
+        crit
+      </button>
+      <button
+        :class="{ active: !this.effects }"
+        @click="toggleLog('effects')"
+        class="btn dun"
+      >
+        effects
+      </button>
+      <button
+        :class="{ active: !this.death }"
+        @click="toggleLog('death')"
+        class="btn dun"
+      >
+        death
+      </button>
+    </div>
     <div
       v-if="!mini"
       class="fullsize"
       :style="{
-        backgroundImage: 'url(' + require('@/assets/icons/background2.png') + ')',
+        backgroundImage:
+          'url(' + require('@/assets/icons/background2.png') + ')',
       }"
-      style="display: flex; flex-direction: column"
+      style="display: flex; flex-direction: column; flex-wrap: wrap"
     >
-      <div style="display: flex; align-self: center">
-        <button :class="{ active: !this.attacks }" @click="toggleLog('attacks')" class="btn dun">
-          basic
-        </button>
-        <button :class="{ active: !this.chance }" @click="toggleLog('chance')" class="btn dun">
-          chance
-        </button>
-        <button :class="{ active: !this.crit }" @click="toggleLog('crit')" class="btn dun">
-          crit
-        </button>
-        <button :class="{ active: !this.effects }" @click="toggleLog('effects')" class="btn dun">
-          effects
-        </button>
-        <button :class="{ active: !this.death }" @click="toggleLog('death')" class="btn dun">
-          death
-        </button>
-      </div>
       <div class="flex">
         <div class="box">
           <div :key="l" v-for="(c, l) in getLog()">
@@ -32,7 +53,12 @@
           </div>
         </div>
         <div class="credits">
-          <a class="abs" style="right: 80px" target="_blank" href="https://discord.gg/gUwvjw2">
+          <a
+            class="abs"
+            style="right: 80px"
+            target="_blank"
+            href="https://discord.gg/gUwvjw2"
+          >
             <img :src="require('@/assets/icons/discord.png')" alt="discord" />
           </a>
 
@@ -66,9 +92,17 @@
             style="right: 260px"
             href="https://shop.spreadshirt.de/Absorber/"
           >
-            <img :src="require('@/assets/icons/spreadshirt.png')" alt="spreadshirt" />
+            <img
+              :src="require('@/assets/icons/spreadshirt.png')"
+              alt="spreadshirt"
+            />
           </a>
-          <div v-if="!mini" @click="openChange()" class="abs clickable" style="left: 20px">
+          <div
+            v-if="!mini"
+            @click="openChange()"
+            class="abs clickable"
+            style="left: 20px"
+          >
             {{ this.$parent.player.version }}
           </div>
         </div>
@@ -82,7 +116,7 @@
       </div>
     </div>
     <div v-else>
-      <div style="display: flex; flex-wrap: wrap; max-width: 250px">
+      <div style="display: flex; flex-wrap: wrap">
         <button
           :class="{ active: !this.attacks }"
           @click="toggleLog('attacks')"
@@ -90,10 +124,18 @@
         >
           basic
         </button>
-        <button :class="{ active: !this.chance }" @click="toggleLog('chance')" class="btn dun dum">
+        <button
+          :class="{ active: !this.chance }"
+          @click="toggleLog('chance')"
+          class="btn dun dum"
+        >
           chance
         </button>
-        <button :class="{ active: !this.crit }" @click="toggleLog('crit')" class="btn dun dum">
+        <button
+          :class="{ active: !this.crit }"
+          @click="toggleLog('crit')"
+          class="btn dun dum"
+        >
           crit
         </button>
         <button
@@ -103,7 +145,11 @@
         >
           effects
         </button>
-        <button :class="{ active: !this.death }" @click="toggleLog('death')" class="btn dun dum">
+        <button
+          :class="{ active: !this.death }"
+          @click="toggleLog('death')"
+          class="btn dun dum"
+        >
           death
         </button>
       </div>
@@ -232,15 +278,16 @@ export default {
   border: 1px solid black;
   border-radius: 5px;
   float: left;
-  min-width: 500px;
+  width: calc(100vw - 60px);
   min-height: 450px;
   margin: 10px;
+  margin-top: 80px;
 }
 
 .abs {
   border: 1px solid black;
   position: fixed;
-  bottom: 65px;
+  bottom: 85px;
   text-decoration: none;
   padding: 5px;
   background: #ffffff;
@@ -262,7 +309,7 @@ export default {
 .overlay {
   position: absolute;
   top: 100px;
-  left: 30px;
+  left: 20px;
   min-height: 300px;
   height: 300px;
   overflow-y: scroll;
@@ -270,5 +317,12 @@ export default {
 .dum {
   min-width: 30px;
   margin: 2px;
+}
+
+.effects {
+  position: fixed;
+  margin: 0px;
+  background: grey;
+  top: 60px;
 }
 </style>

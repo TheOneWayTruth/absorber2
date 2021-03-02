@@ -19,31 +19,24 @@
         <div>
           <div>{{ min }} / {{ max }}</div>
           <br />
-          <img v-if="value.id" class="image" :src="getImage" :alt="value.name" />
+          <img
+            v-if="value.id"
+            class="image"
+            :src="getImage"
+            :alt="value.name"
+          />
           <br />
           {{ value.name }}
         </div>
       </div>
-      <TooltipItem
-        :type="'enemy'"
-        :item="value"
-        v-show="!dragging"
-        :shift="$parent.$parent.shiftIsPressed"
-        :ctrl="$parent.$parent.cntrlIsPressed"
-      />
     </div>
   </div>
 </template>
 
 <script>
-import TooltipItem from "./Tooltip.vue";
-
 import { respawn } from "./functions";
 export default {
   name: "EnemyItem",
-  components: {
-    TooltipItem,
-  },
   props: {
     value: {
       type: Object,
@@ -128,16 +121,16 @@ export default {
 <style scoped>
 .kiste {
   border-radius: 5%;
-  font-size: 14px;
+  font-size: 25px;
   user-select: none;
   cursor: pointer;
   background: whitesmoke;
-  margin: 10px;
+  margin: 5px;
   padding: 10px;
   border: 1px solid black;
   text-align: center;
-  width: 80px;
-  min-height: 140px;
+  width: calc((100vw - 92px) / 2);
+  min-height: calc(100vh / 2.2);
   box-shadow: inset -2px -2px 2px lightgray;
   transition: 0.1s;
 }

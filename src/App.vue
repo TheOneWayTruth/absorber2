@@ -94,12 +94,13 @@ html,
   box-shadow: 0 2px #0a9bf5;
   line-height: 20px;
 }
+
 .text {
   background: lightgray;
   margin-left: 10px;
   padding: 20px;
   display: block;
-  width: 790px;
+  width: calc(100vw - 100px);
   border-radius: 5px;
   border: 1px solid black;
   box-shadow: inset 0 0 4px grey;

@@ -1,8 +1,16 @@
 <template>
   <div>
-    <div :class="{ bspeed: this.speed, abp: this.ab }" class="myProgress" ref="myProgress">
+    <div
+      :class="{ bspeed: this.speed, abp: this.ab }"
+      class="myProgress"
+      ref="myProgress"
+    >
       <span :key="rounded" class="middle">{{ rounded }}</span>
-      <div class="myBar" ref="myBar" :class="{ fspeed: this.speed, abar: this.ab }"></div>
+      <div
+        class="myBar"
+        ref="myBar"
+        :class="{ fspeed: this.speed, abar: this.ab }"
+      ></div>
     </div>
   </div>
 </template>
@@ -87,7 +95,7 @@ export default {
   margin: 0px;
   width: calc(100% - 2px);
   position: fixed;
-  bottom: 0px;
+  top: 0px;
   border-radius: 0px;
   border: 1px solid black;
 }
@@ -98,6 +106,6 @@ export default {
 }
 
 .abp.bspeed {
-  bottom: 30px;
+  top: 32px;
 }
 </style>

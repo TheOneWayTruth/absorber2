@@ -20,6 +20,13 @@ Vue.prototype.changelog = changelog
 Vue.prototype.itemslist = itemslist
 Vue.prototype.images = []
 
+import Ads from 'vue-google-adsense'
+
+Vue.use(require('vue-script2'))
+
+Vue.use(Ads.Adsense)
+Vue.use(Ads.InArticleAdsense)
+
 Vue.prototype.beta = false
 
 new Vue({

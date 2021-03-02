@@ -9,23 +9,24 @@
       <div>
         <div class="text">
           <div>
-            <span>
-              Press
-              <b>CTRL</b> for stats. <b>SHIFT</b> for description.
-              <span v-show="$parent.player.prestige >= 3">
-                <b>DRAG</b> to change fighting order.
-              </span>
-            </span>
-          </div>
-          <div>
+            <div class="time">
+              {{ gettime(this.$parent.player.time) }}
+            </div>
             <button
-              v-show="$parent.player.prestige >= 4"
               class="btn dun"
               @click="hideUnhide()"
               :class="{ active: !this.hidden }"
             >
-              <img v-if="this.hidden" :src="require('@/assets/icons/visible.png')" alt="visible" />
-              <img v-else :src="require('@/assets/icons/hidden.png')" alt="hidden" />
+              <img
+                v-if="this.hidden"
+                :src="require('@/assets/icons/visible.png')"
+                alt="visible"
+              />
+              <img
+                v-else
+                :src="require('@/assets/icons/hidden.png')"
+                alt="hidden"
+              />
               <span v-if="this.hidden">Hide Finished</span>
               <span v-else>Show Finished</span>
             </button>
@@ -37,7 +38,11 @@
               <img :src="require('@/assets/icons/auto.png')" alt="auto" />
               <span>Autofight</span>
             </button>
-            <button v-show="$parent.player.prestige >= 3" class="btn dun" @click="resetOrder()">
+            <button
+              v-show="$parent.player.prestige >= 3"
+              class="btn dun"
+              @click="resetOrder()"
+            >
               <img :src="require('@/assets/icons/order.png')" alt="auto" />
               <span>Reset Order</span>
             </button>
@@ -47,7 +52,12 @@
                 :src="require('@/assets/icons/search.png')"
                 alt="search"
               />
-              <span v-show="searchv != ''" @click="closesearch" class="closesearch">X</span>
+              <span
+                v-show="searchv != ''"
+                @click="closesearch"
+                class="closesearch"
+                >X</span
+              >
               <input autocorrect="off" class="faker" v-model="searchv" />
             </div>
           </div>
@@ -57,14 +67,18 @@
         <div>
           <div class="flex">
             <div :key="key" v-for="(value, key) in getPrestigeEnemys()">
-              <Enemy :min="getcount(value.id)" :max="getLast(value.max)" :value="value" />
+              <Enemy
+                :min="getcount(value.id)"
+                :max="getLast(value.max)"
+                :value="value"
+              />
             </div>
           </div>
         </div>
       </div>
       <div class="text">
-        Any similarity with other books, games or movies is just coincidence and results from your
-        fertile imagination.
+        Any similarity with other books, games or movies is just coincidence and
+        results from your fertile imagination.
       </div>
     </div>
   </div>
@@ -98,11 +112,24 @@ export default {
       this.$parent.player.order = this.enemieslist.map(({ id: a }) => a);
     },
     getcount(id) {
-      this.$parent.player.counter[id] == null && (this.$parent.player.counter[id] = 0);
+      this.$parent.player.counter[id] == null &&
+        (this.$parent.player.counter[id] = 0);
       return this.$parent.player.counter[id];
     },
     getLast(v) {
       return getLast(v, this.$parent.player.prestige);
+    },
+    gettime(a) {
+      var b = parseInt(a, 10),
+        c = Math.floor(b / 3600),
+        d = Math.floor((b - 3600 * c) / 60),
+        e = b - 3600 * c - 60 * d;
+      return (
+        10 > c && (c = "0" + c),
+        10 > d && (d = "0" + d),
+        10 > e && (e = "0" + e),
+        0 < c ? c + ":" + d + ":" + e : 0 < d ? d + ":" + e : e
+      );
     },
     getPrestigeEnemys() {
       let list = [],
@@ -124,7 +151,11 @@ export default {
         if (el.searchv != "" && !x.name.match(new RegExp(el.searchv, "i"))) {
           return false;
         }
-        if (x.prestige != null && x.prestige != undefined && el.search != x.name) {
+        if (
+          x.prestige != null &&
+          x.prestige != undefined &&
+          el.search != x.name
+        ) {
           return el.$parent.player.prestige >= x.prestige;
         }
         return true;
@@ -135,6 +166,10 @@ export default {
 </script>
 
 <style scoped>
+.flex {
+  justify-content: center;
+}
+
 .kiste {
   border-radius: 5%;
   font-size: 14px;
@@ -146,10 +181,11 @@ export default {
   border: 1px solid black;
   text-align: center;
   width: 80px;
-  min-height: 100px;
+  min-height: 140px;
   box-shadow: inset -2px -2px 2px lightgray;
   transition: 0.1s;
 }
+
 .kiste:hover {
   background: lightgray;
   box-shadow: inset -2px -2px 2px grey;
@@ -193,5 +229,8 @@ export default {
   cursor: pointer;
   transform: translate(180px);
   position: absolute;
+}
+.text {
+  font-size: 22px;
 }
 </style>
