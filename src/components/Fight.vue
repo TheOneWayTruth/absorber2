@@ -210,11 +210,19 @@ export default {
 
     player.lastEnemy = this.item.id;
     this.timer2 = setInterval(() => {
+<<<<<<< Updated upstream
       checkTurn(player, this.item, this.won, this.exit, this.$parent.kongregate, this.itemslist);
     }, 100);
 
     this.timer1 = setInterval(() => {
       checkTurn(this.item, player, this.won, this.exit, this.$parent.kongregate, this.itemslist);
+=======
+      checkTurn(player, this.item, this.won, this.exit, this.itemslist);
+    }, 100);
+
+    this.timer1 = setInterval(() => {
+      checkTurn(this.item, player, this.won, this.exit, this.itemslist);
+>>>>>>> Stashed changes
     }, 100);
   },
   beforeDestroy() {

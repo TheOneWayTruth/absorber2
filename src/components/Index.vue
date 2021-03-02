@@ -581,6 +581,10 @@ export default {
     } catch {}
 
     this.preloading();
+<<<<<<< Updated upstream
+=======
+    let el = this;
+>>>>>>> Stashed changes
 
     $.getJSON("https://api.kongregate.com/api/kongpanions/index.json", function (data) {
       if (data.success) el.complist = data.kongpanions;

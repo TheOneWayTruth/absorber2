@@ -63,8 +63,13 @@
         </div>
       </div>
       <div class="text">
+<<<<<<< Updated upstream
         Any similarity with other books, games or movies is just coincidence and results from your
         fertile imagination.
+=======
+        Any similarity with other books, games or movies is just coincidence and
+        results from your fertile imagination.
+>>>>>>> Stashed changes
       </div>
     </div>
   </div>
