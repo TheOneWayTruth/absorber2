@@ -4,7 +4,7 @@
       <img
         v-if="this.background != ''"
         class="bc"
-        :src="require('@/assets/icons/' + this.background + '.png')"
+        :src="require('@/assets/icons/' + this.background + '.webp')"
       />
       <div class="overlay" :style="'background-color:' + this.color">
         <div class="box" :style="'left:' + this.place">
@@ -14,7 +14,7 @@
               style="image-rendering: pixelated"
               width="200px;"
               v-if="this.img != ''"
-              :src="require('@/assets/' + this.img + '.png')"
+              :src="require('@/assets/' + this.img + '.webp')"
             />
           </div>
           <div class="flex" style="width: 100%">
@@ -36,7 +36,7 @@
           class="kiste"
           :style="{
             backgroundImage:
-              'url(' + require('@/assets/icons/background.png') + ')',
+              'url(' + require('@/assets/icons/background.webp') + ')',
           }"
         >
           <button class="btn close" @click="close">X</button>

@@ -2,7 +2,8 @@
   <div
     class="fullsize"
     :style="{
-      backgroundImage: 'url(' + require('@/assets/icons/background2.png') + ')',
+      backgroundImage:
+        'url(' + require('@/assets/icons/background2.webp') + ')',
     }"
   >
     <div>
@@ -19,12 +20,12 @@
             >
               <img
                 v-if="this.hidden"
-                :src="require('@/assets/icons/visible.png')"
+                :src="require('@/assets/icons/visible.webp')"
                 alt="visible"
               />
               <img
                 v-else
-                :src="require('@/assets/icons/hidden.png')"
+                :src="require('@/assets/icons/hidden.webp')"
                 alt="hidden"
               />
               <span v-if="this.hidden">Hide Finished</span>
@@ -35,7 +36,7 @@
               class="btn dun"
               :class="{ active: this.$parent.player.auto }"
             >
-              <img :src="require('@/assets/icons/auto.png')" alt="auto" />
+              <img :src="require('@/assets/icons/auto.webp')" alt="auto" />
               <span>Autofight</span>
             </button>
             <button
@@ -43,13 +44,13 @@
               class="btn dun"
               @click="resetOrder()"
             >
-              <img :src="require('@/assets/icons/order.png')" alt="auto" />
+              <img :src="require('@/assets/icons/order.webp')" alt="auto" />
               <span>Reset Order</span>
             </button>
             <div v-show="$parent.player.prestige >= 5" style="float: right">
               <img
                 style="padding: 5px; float: left"
-                :src="require('@/assets/icons/search.png')"
+                :src="require('@/assets/icons/search.webp')"
                 alt="search"
               />
               <span

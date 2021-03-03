@@ -2,7 +2,7 @@
   <div
     class="rows nearlyfullsize"
     :style="{
-      backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
+      backgroundImage: 'url(' + require('@/assets/icons/background.webp') + ')',
     }"
   >
     <div v-show="showbox" class="infobox box">
@@ -96,7 +96,7 @@
     </div>
     <button @click="showbox = !showbox" class="info">i</button>
     <div class="door" @click="exitFight()">
-      <img :src="require('@/assets/icons/door.png')" alt="back" />
+      <img :src="require('@/assets/icons/door.webp')" alt="back" />
     </div>
   </div>
 </template>
@@ -194,23 +194,11 @@ export default {
 
     player.lastEnemy = this.item.id;
     this.timer2 = setInterval(() => {
-      checkTurn(
-        player,
-        this.item,
-        this.won,
-        this.exit,
-        this.itemslist
-      );
+      checkTurn(player, this.item, this.won, this.exit, this.itemslist);
     }, 100);
 
     this.timer1 = setInterval(() => {
-      checkTurn(
-        this.item,
-        player,
-        this.won,
-        this.exit,
-        this.itemslist
-      );
+      checkTurn(this.item, player, this.won, this.exit, this.itemslist);
     }, 100);
   },
   beforeDestroy() {

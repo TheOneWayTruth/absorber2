@@ -42,7 +42,7 @@
       class="fullsize"
       :style="{
         backgroundImage:
-          'url(' + require('@/assets/icons/background2.png') + ')',
+          'url(' + require('@/assets/icons/background2.webp') + ')',
       }"
       style="display: flex; flex-direction: column; flex-wrap: wrap"
     >
@@ -59,7 +59,7 @@
             target="_blank"
             href="https://discord.gg/gUwvjw2"
           >
-            <img :src="require('@/assets/icons/discord.png')" alt="discord" />
+            <img :src="require('@/assets/icons/discord.webp')" alt="discord" />
           </a>
 
           <a
@@ -68,7 +68,7 @@
             style="right: 140px"
             href="https://www.paypal.com/paypalme/wickalexander"
           >
-            <img :src="require('@/assets/icons/paypal.png')" alt="paypal" />
+            <img :src="require('@/assets/icons/paypal.webp')" alt="paypal" />
           </a>
           <a
             class="abs"
@@ -76,7 +76,7 @@
             style="right: 200px"
             href="https://twitter.com/schlauewurst"
           >
-            <img :src="require('@/assets/icons/twitter.png')" alt="Twitter" />
+            <img :src="require('@/assets/icons/twitter.webp')" alt="Twitter" />
           </a>
           <a
             class="abs"
@@ -84,7 +84,7 @@
             style="right: 20px"
             href="https://www.patreon.com/schlauewurst"
           >
-            <img :src="require('@/assets/icons/patreon.jpg')" alt="patreon" />
+            <img :src="require('@/assets/icons/patreon.webp')" alt="patreon" />
           </a>
           <a
             class="abs"
@@ -93,7 +93,7 @@
             href="https://shop.spreadshirt.de/Absorber/"
           >
             <img
-              :src="require('@/assets/icons/spreadshirt.png')"
+              :src="require('@/assets/icons/spreadshirt.webp')"
               alt="spreadshirt"
             />
           </a>

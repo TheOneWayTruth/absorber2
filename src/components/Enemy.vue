@@ -3,7 +3,10 @@
     <div style="display: flex">
       <div
         v-show="this.$parent.hidden || !checkready(value)"
-        :class="{ ready: checkready(value) }"
+        :class="{
+          ready: checkready(value),
+          fighting: value == $parent.$parent.enemy,
+        }"
         @click.middle="cheat"
         @click="selectEnemy(value)"
         @dragstart="handleDragStart"
@@ -58,6 +61,7 @@ export default {
       dragging: false,
     };
   },
+
   methods: {
     isDragable() {
       return this.$parent.$parent.player.prestige >= 3;
@@ -132,14 +136,15 @@ export default {
   border: 1px solid black;
   text-align: center;
   width: calc((100vw - 92px) / 2);
-  min-height: calc(100vh / 2.2);
+  min-height: 300px;
   box-shadow: inset -2px -2px 2px lightgray;
   transition: 0.1s;
 }
-.kiste:hover {
+
+.fighting {
   background: lightgray;
   box-shadow: inset -2px -2px 2px grey;
-  transform: translate(0px, -10px);
+  transform: scale(0.9);
 }
 
 .kiste img {
