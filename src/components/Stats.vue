@@ -244,44 +244,8 @@
       </div>
       <div class="options">
         <div class="boxbox">
-          <h2>FILE</h2>
+          <h2>LOCAL</h2>
           <div style="display: flex">
-            <button class="btn half" @click="exportSave">
-              <img :src="require('@/assets/icons/export.webp')" alt="Export" />
-              <span>Export</span>
-            </button>
-
-            <button class="btn half" @click="importSave">
-              <label
-                for="import"
-                style="
-                  cursor: pointer;
-                  display: flex;
-                  justify-content: center;
-                  flex-wrap: wrap;
-                "
-              >
-                <img
-                  :src="require('@/assets/icons/import.webp')"
-                  alt="Import"
-                />
-                <span>Import</span>
-              </label>
-            </button>
-          </div>
-        </div>
-
-        <input ref="import" id="import" accept="text/txt" type="file" />
-
-        <div class="boxbox">
-          <label v-if="$parent.cloud" class="switch">
-            <input v-model="clouduse" type="checkbox" />
-            <h2 class="slider round">
-              <span v-if="!clouduse">LOCAL</span><span v-else>CLOUD</span>
-            </h2>
-          </label>
-          <h2 v-else>LOCAL</h2>
-          <div v-if="!clouduse" style="display: flex">
             <button class="btn half" @click="loadGame">
               <img :src="require('@/assets/icons/load.webp')" alt="Load" />
               <span>Load</span>
@@ -292,19 +256,61 @@
               <span>Save</span>
             </button>
           </div>
-          <div v-else>
-            <span style="border: 1px solid red" v-show="beta"
-              >Dosnt work in Beta</span
-            >
+        </div>
+
+        <div class="boxbox">
+          <h2>Profil</h2>
+
+          <div>
             <div style="display: flex">
-              <button class="btn load half" @click="Cloudload">
+              <button
+                @click="loginGoogle"
+                v-show="user == null"
+                class="btn load half"
+              >
+                <img :src="require('@/assets/icons/hero.webp')" alt="load" />
+                <span>Google</span>
+              </button>
+              <button
+                @click="Logout"
+                v-show="user != null"
+                class="btn save half"
+              >
+                <img :src="require('@/assets/icons/door.webp')" alt="save" />
+                <span>Logout</span>
+              </button>
+              <button v-if="user != null" class="btn save half">
+                <img
+                  style="border-radius: 50%"
+                  :src="user.photoURL"
+                  alt="image"
+                />
+                <span
+                  style="
+                    font-size: 15px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                  "
+                  >{{ user.displayName }}</span
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div v-show="user != null" class="boxbox">
+          <h2>Cloud</h2>
+          <div>
+            <div style="display: flex">
+              <button @click="cloudLoad" class="btn load half">
                 <img
                   :src="require('@/assets/icons/cloudload.webp')"
                   alt="load"
                 />
                 <span>Load</span>
               </button>
-              <button class="btn save half" @click="Cloudsave">
+              <button @click="cloudSave" class="btn save half">
                 <img
                   :src="require('@/assets/icons/cloudsave.webp')"
                   alt="save"
@@ -338,9 +344,17 @@
 </template>
 
 <script>
-import { copyToClipboard, removeItemOnce } from "./functions";
+import { removeItemOnce } from "./functions";
 import Ability from "./Ability.vue";
 import Tooltip from "./Tooltip.vue";
+import {
+  signInWithGoogle,
+  setListender,
+  getUser,
+  signOut,
+  setDataBase,
+  getDataBasebyId,
+} from "./firebase";
 
 export default {
   name: "StatsItem",
@@ -359,10 +373,44 @@ export default {
       openskills: true,
       opencomp: true,
       openitems: true,
-      clouduse: false,
+      user: null,
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      setListender(this.updateUser);
+    });
+  },
   methods: {
+    cloudLoad() {
+      getDataBasebyId("save", this.user.uid).then((e) => {
+        if (e.data() != null) {
+          this.$parent.recalculate(e.data());
+        }
+      });
+    },
+    cloudSave() {
+      let save = JSON.parse(JSON.stringify(this.$parent.player));
+
+      delete save.effects;
+      delete save.chance;
+      delete save.resistance;
+      delete save.life;
+      delete save.clife;
+      delete save.speed;
+      delete save.cspeed;
+      delete save.magic;
+      delete save.regeneration;
+      delete save.recovery;
+      delete save.dmg;
+      delete save.status;
+      delete save.points;
+      delete save.sspeed;
+
+      setDataBase("save", this.user.uid, save).then((e) => {
+        console.log(e);
+      });
+    },
     getAnyElement(obj) {
       var sum = 0;
       for (var el in obj) {
@@ -372,8 +420,20 @@ export default {
       }
       return sum;
     },
+    updateUser() {
+      this.user = getUser();
+    },
+    Logout() {
+      signOut().then((e) => {
+        console.log(e);
+        this.user = null;
+      });
+    },
     isEmpty(o) {
       return Object.keys(o).length !== 0;
+    },
+    loginGoogle() {
+      signInWithGoogle().then((e) => console.log(e));
     },
     getPercent(e) {
       if (this.$parent.player.allcount != undefined) {
@@ -440,42 +500,8 @@ export default {
     saveGame() {
       this.$parent.save();
     },
-    exportSave() {
-      if (this.beta) {
-        copyToClipboard(JSON.stringify(this.$parent.player));
-      } else {
-        copyToClipboard(
-          this.reverse(btoa(this.reverse(JSON.stringify(this.$parent.player))))
-        );
-      }
-
-      this.$parent.log.push("<div>Save was downloaded</div>");
-    },
     getRealEnemyName(id) {
       return this.enemieslist.find((x) => x.id == id).name;
-    },
-    importSave() {
-      let el = this;
-      this.$refs.import.addEventListener("change", function () {
-        if (this.files && this.files[0]) {
-          var reader = new FileReader();
-
-          reader.addEventListener("load", function (e) {
-            let r = {};
-            try {
-              r = JSON.parse(e.target.result);
-            } catch {
-              r = JSON.parse(el.reverse(atob(el.reverse(e.target.result))));
-            }
-
-            el.$parent.recalculate(r);
-            el.$parent.log.push("<div>Save was loaded</div>");
-          });
-
-          reader.readAsBinaryString(this.files[0]);
-        }
-      });
-      this.saveGame();
     },
     groupSkills(list) {
       let obj = {};
@@ -584,8 +610,8 @@ export default {
 
 .options {
   display: flex;
-
   flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .faker {
@@ -605,13 +631,15 @@ export default {
 }
 
 .boxbox {
-  margin: 10px;
+  min-width: 165px;
+  margin: 5px;
   text-align: center;
   border: 1px solid black;
   background: silver;
   border-radius: 4px;
   box-shadow: inset 0 0 4px grey;
 }
+
 .boxbox h2 {
   margin: 3px;
 }

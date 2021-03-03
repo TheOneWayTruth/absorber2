@@ -521,7 +521,7 @@ export default {
       ? el.recalculate(el.player)
       : el.recalculate(JSON.parse(localStorage.getItem("saveGame")));
 
-    window.addEventListener("keydown", function () {
+    window.addEventListener("keydown", function (event) {
       "17" == event.which && (el.cntrlIsPressed = true);
       "16" == event.which && (el.shiftIsPressed = true);
     });

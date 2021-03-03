@@ -7,23 +7,8 @@ import changelog from "./components/json/changelog.json";
 import bufflist from "./components/json/bufflist.json";
 import skillist from "./components/json/skilltree.json";
 import itemslist from "./components/json/items.json";
+import "./components/firebase.js"
 
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBOOTIcrqTBf_rR2vCFCKctxTfzfbWLNig",
-  authDomain: "absorber5.firebaseapp.com",
-  databaseURL: "https://absorber5.firebaseio.com",
-  projectId: "absorber5",
-  storageBucket: "absorber5.appspot.com",
-  messagingSenderId: "475063218887",
-  appId: "1:475063218887:web:00aa330b54c223fdd644e2",
-  measurementId: "G-DN11HDSJH2"
-};
-
-firebase.initializeApp(firebaseConfig);
 
 Vue.config.productionTip = false
 
