@@ -90,7 +90,10 @@ export async function getAllDataBase(collection, id) {
 
 export function signInWithGoogle() {
     return new Promise((resolve, reject) => {
-        auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+            .then(() => {
+                return firebase.auth().getRedirectResult();
+            })
             .then(function (result) {
                 resolve(result)
             })
