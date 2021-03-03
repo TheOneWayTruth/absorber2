@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import $ from "jquery";
+
 export default {
   data() {
     return {
@@ -44,7 +46,7 @@ export default {
       if (this.$parent.active == t) {
         return;
       }
-      console.log(t);
+
       if (t != "dungeon") {
         this.dungeonscroll = $(window).scrollTop();
       }

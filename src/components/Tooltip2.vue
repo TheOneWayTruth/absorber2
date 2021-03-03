@@ -8,6 +8,9 @@
 </template>
 
 <script>
+import $ from "jquery";
+import choise from "./json/choises.json";
+
 export default {
   props: {
     item: {
@@ -72,7 +75,8 @@ export default {
             element.style.top = posx + targetheight / 2 + "px";
           }
           if (posx + targetheight / 2 + height >= window.innerHeight - 20) {
-            let diff = posx + targetheight / 2 + height - window.innerHeight + 20;
+            let diff =
+              posx + targetheight / 2 + height - window.innerHeight + 20;
             element.style.top = posx + targetheight / 2 - diff + "px";
           }
         }

@@ -56,6 +56,8 @@
 <script>
 import Ability from "./Ability.vue";
 import Statslist from "./Statslist.vue";
+import $ from "jquery";
+
 export default {
   name: "Tooltip",
   components: {
@@ -163,7 +165,8 @@ export default {
             element.style.top = posx + targetheight / 2 + "px";
           }
           if (posx + targetheight / 2 + height >= window.innerHeight - 20) {
-            let diff = posx + targetheight / 2 + height - window.innerHeight + 20;
+            let diff =
+              posx + targetheight / 2 + height - window.innerHeight + 20;
             element.style.top = posx + targetheight / 2 - diff + "px";
           }
         }
@@ -171,8 +174,6 @@ export default {
     },
   },
   mounted() {
-    let el = this;
-
     this.llistender = () => {
       this.show = false;
     };
@@ -189,10 +190,10 @@ export default {
     $(this.$el).parent().first().off("mouseleave", this.llistender);
   },
   watch: {
-    shift: function (val) {
+    shift: () => {
       this.calculatePosition(false);
     },
-    ctrl: function (val) {
+    ctrl: () => {
       this.calculatePosition(false);
     },
   },

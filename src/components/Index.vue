@@ -60,7 +60,6 @@ import Progressbar from "./Progressbar.vue";
 import Overlay from "./Overlay.vue";
 import Menue from "./Menue";
 
-import { RoundAll, getboni } from "./displayfunc";
 import {
   respawn,
   getLast,
@@ -69,6 +68,7 @@ import {
   hasDuplicates,
   isEmpty,
 } from "./functions.js";
+
 import { log } from "./gloabals.js";
 
 export default {
@@ -90,7 +90,7 @@ export default {
       enemy: null,
       htimer: null,
       recovery: true,
-      kongregate: null,
+
       overlay: false,
       skilltree: false,
       cntrlIsPressed: false,
@@ -177,7 +177,6 @@ export default {
       player.order = pl.order;
       player.prestige = pl.prestige;
       player.name = pl.name;
-      player.companion = pl.companion;
       player.auto = pl.auto;
       player.time = pl.time;
       player.lastEnemy = pl.lastEnemy;
@@ -206,13 +205,6 @@ export default {
         this.SingleCalculation(c, player);
       }
 
-      if (null != player.companion) {
-        let a = getboni(
-          this.complist.find((a) => a.id == player.companion).tags
-        );
-        this.SingleCalculation(a, player);
-      }
-
       if (null != player.items) {
         for (let d of player.items) {
           let e = this.itemslist.find((a) => a.id === d);
@@ -236,13 +228,6 @@ export default {
       //Reset push new enemies into order
       while (this.enemieslist.length > player.order.length) {
         player.order.push(this.enemieslist[player.order.length].id);
-      }
-
-      // Submit current Highscores
-      for (let b in player.highscore) {
-        if (0 < player.highscore[b] && null != this.kongregate) {
-          this.kongregate.stats.submit(b, player.highscore[b]);
-        }
       }
 
       //Calculation Points via Prestige and Skills
@@ -382,8 +367,7 @@ export default {
       }
     },
     displayfinish() {
-      let ov = this.$refs.ov.$data,
-        player = this.player;
+      let ov = this.$refs.ov.$data;
 
       let obj = [
         {
@@ -527,54 +511,15 @@ export default {
         });
       this.preloaded = true;
     },
-    loginInUsingPlayFab() {
-      if (this.kongregate.services.getUserId() == 0) {
-        return;
-      }
-
-      let el = this;
-      PlayFab.settings.titleId = "857F6";
-
-      var request = {
-        TitleId: PlayFab.settings.titleId,
-        AuthTicket: this.kongregate.services.getGameAuthToken(),
-        KongregateId: this.kongregate.services.getUserId(),
-        CreateAccount: true,
-      };
-
-      PlayFabClientSDK.LoginWithKongregate(
-        request,
-        function (v) {
-          el.PlayFab = v.data.SessionTicket;
-          el.cloud = true;
-        },
-        function (v) {}
-      );
-    },
   },
   mounted() {
-    let el = this,
-      kongregate;
-    try {
-      kongregateAPI.loadAPI(function () {
-        kongregate = kongregateAPI.getAPI();
-        el.kongregate = kongregate;
-        el.loginInUsingPlayFab();
-      });
-    } catch {}
+    let el = this;
 
     this.preloading();
 
-    $.getJSON(
-      "https://api.kongregate.com/api/kongpanions/index.json",
-      function (data) {
-        if (data.success) el.complist = data.kongpanions;
-      }
-    ).done(function () {
-      null == localStorage.getItem("saveGame")
-        ? el.recalculate(el.player)
-        : el.recalculate(JSON.parse(localStorage.getItem("saveGame")));
-    });
+    null == localStorage.getItem("saveGame")
+      ? el.recalculate(el.player)
+      : el.recalculate(JSON.parse(localStorage.getItem("saveGame")));
 
     window.addEventListener("keydown", function () {
       "17" == event.which && (el.cntrlIsPressed = true);

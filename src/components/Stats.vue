@@ -331,9 +331,7 @@
 </template>
 
 <script>
-import { debug } from "./gloabals.js";
-import { copyToClipboard, getClipBoard, removeItemOnce } from "./functions";
-import { getboni } from "./displayfunc";
+import { copyToClipboard, removeItemOnce } from "./functions";
 import Ability from "./Ability.vue";
 import Tooltip from "./Tooltip.vue";
 
@@ -358,26 +356,6 @@ export default {
     };
   },
   methods: {
-    Cloudload() {
-      let el = this;
-      PlayFabClientSDK.GetUserData({
-        SessionTicket: el.$parent.PlayFab,
-      }).then(function (x) {
-        el.$parent.player = JSON.parse(x.data.Data.save.Value);
-        console.log("loaded");
-      });
-    },
-    Cloudsave() {
-      let el = this;
-
-      var d = {
-        Data: { save: JSON.stringify(this.$parent.player) },
-      };
-
-      PlayFabClientSDK.UpdateUserData(d).then(function (x) {
-        console.log("saved");
-      });
-    },
     getAnyElement(obj) {
       var sum = 0;
       for (var el in obj) {
@@ -385,7 +363,6 @@ export default {
           sum += parseFloat(obj[el]);
         }
       }
-
       return sum;
     },
     isEmpty(o) {
@@ -424,9 +401,6 @@ export default {
       } else {
         return true;
       }
-    },
-    getboni(tags) {
-      return getboni(tags);
     },
     EquipItem(item) {
       if (this.$parent.player.items.includes(item)) {
@@ -551,7 +525,6 @@ export default {
       delete pl.go;
       delete pl.unlocked;
       delete pl.allcount;
-      delete pl.companion;
       delete pl.skills;
       delete pl.time;
       delete pl.items;
@@ -569,25 +542,6 @@ export default {
       delete pl.chance;
       return pl;
     },
-  },
-  created() {
-    let boot = setInterval(() => {
-      if (this.$parent.kongregate != null) {
-        if (!this.$parent.kongregate.services.isGuest() || this.beta) {
-          let user = "";
-          if (this.beta) {
-            if (this.$parent.player.name == "showmethemoney") {
-              user = "dirkf17";
-            } else {
-              user = this.$parent.player.name;
-            }
-          } else {
-            user = this.$parent.kongregate.services.getUsername();
-          }
-        }
-        clearInterval(boot);
-      }
-    }, 500);
   },
 };
 </script>

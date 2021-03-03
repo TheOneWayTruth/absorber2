@@ -9,10 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.9.0",
-    "js-cookie": "^2.2.1",
-    "vue": "^2.6.12",
-    "vue-google-adsense": "^1.9.2",
-    "vue-script2": "^2.1.0"
+    "jquery": "^3.6.0",
+    "vue": "^2.6.12"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.11",
@@ -33,18 +31,19 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-unused-declaration": "on",
-      "no-console": "off",
-      "no-unused-vars": "off",
-      "no-empty": "off",
-      "no-undef": "off"
+      "no-console": 0,
+      "no-unused-vars": 1,
+      "no-empty": 0,
+      "no-undef": 1
     },
     "parserOptions": {
       "parser": "babel-eslint"
     }
   },
   "browserslist": [
-    "> 1%",
-    "last 2 versions"
+    "last 3 Chrome versions",
+    "not ie <= 11",
+    "> 5%",
+    "not dead"
   ]
 }

@@ -18,7 +18,12 @@
             />
           </div>
           <div class="flex" style="width: 100%">
-            <div class="btn" :key="k" v-for="(thing, k) in obj" @click="thing.func">
+            <div
+              class="btn"
+              :key="k"
+              v-for="(thing, k) in obj"
+              @click="thing.func"
+            >
               <div>{{ thing.text }}</div>
             </div>
           </div>
@@ -30,7 +35,8 @@
         <div
           class="kiste"
           :style="{
-            backgroundImage: 'url(' + require('@/assets/icons/background.png') + ')',
+            backgroundImage:
+              'url(' + require('@/assets/icons/background.png') + ')',
           }"
         >
           <button class="btn close" @click="close">X</button>
@@ -83,7 +89,7 @@
 <script>
 import skilltree from "./json/skilltree.json";
 import Accordion from "./Accordion.vue";
-import { getParentById, getNodeById } from "./functions.js";
+import { getNodeById } from "./functions.js";
 
 export default {
   name: "OverlayItem",
@@ -92,7 +98,11 @@ export default {
   },
   methods: {
     chooseskill(s) {
-      if (!this.choosen(s) && this.$parent.player.points > 0 && !this.canBeChoosen(s)) {
+      if (
+        !this.choosen(s) &&
+        this.$parent.player.points > 0 &&
+        !this.canBeChoosen(s)
+      ) {
         this.$parent.player.skills.push(s);
         this.$parent.player.points--;
         this.$parent.recalculate(this.$parent.player);

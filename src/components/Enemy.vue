@@ -35,6 +35,8 @@
 
 <script>
 import { respawn } from "./functions";
+import $ from "jquery";
+
 export default {
   name: "EnemyItem",
   props: {
@@ -70,10 +72,10 @@ export default {
       e.preventDefault && e.preventDefault();
       return false;
     },
-    handleDragEnter(e) {
+    handleDragEnter() {
       $(this).addClass("over");
     },
-    handleDragLeave(e) {
+    handleDragLeave() {
       $(this).removeClass("over");
     },
     handleDrop(e) {
@@ -88,7 +90,7 @@ export default {
       }
       return false;
     },
-    handleDragEnd(e) {
+    handleDragEnd() {
       this.dragging = false;
       $(".kiste").removeClass("over");
       $(".kiste").css("opacity", "1");

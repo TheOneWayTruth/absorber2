@@ -37,7 +37,7 @@ export default {
     },
   },
   watch: {
-    val: function (newVal, oldVal) {
+    val: function () {
       let pz = (this.val / this.max) * 100;
       this.$refs.myBar.style.width = pz + "%";
     },

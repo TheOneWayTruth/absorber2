@@ -199,7 +199,6 @@ export default {
         this.item,
         this.won,
         this.exit,
-        this.$parent.kongregate,
         this.itemslist
       );
     }, 100);
@@ -210,7 +209,6 @@ export default {
         player,
         this.won,
         this.exit,
-        this.$parent.kongregate,
         this.itemslist
       );
     }, 100);
