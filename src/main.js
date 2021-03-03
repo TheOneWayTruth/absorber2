@@ -8,11 +8,6 @@ import bufflist from "./components/json/bufflist.json";
 import skillist from "./components/json/skilltree.json";
 import itemslist from "./components/json/items.json";
 
-import Ads from 'vue-google-adsense'
-
-Vue.use(require('vue-script2'))
-Vue.use(Ads.Adsense)
-
 Vue.config.productionTip = false
 
 Vue.prototype.enemieslist = enemieslist

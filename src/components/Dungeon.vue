@@ -5,6 +5,7 @@
       backgroundImage:
         'url(' + require('@/assets/icons/background2.webp') + ')',
     }"
+    style="min-height: calc(100vh - 200px) !important"
   >
     <div>
       <div>
@@ -88,13 +89,7 @@
         Any similarity with other books, games or movies is just coincidence and
         results from your fertile imagination.
       </div>
-      <div style="margin: 10px" class="text">
-        <Adsense
-          data-ad-client="ca-pub-7494960732262742"
-          data-ad-slot="9048863009"
-        >
-        </Adsense>
-      </div>
+      <div style="margin: 10px" class="text"></div>
     </div>
   </div>
 </template>

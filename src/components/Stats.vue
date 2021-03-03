@@ -311,7 +311,7 @@
 </template>
 
 <script>
-import { copyToClipboard, removeItemOnce } from "./functions";
+import { copyToClipboard, removeItemOnce, isEmpty } from "./functions";
 import { getboni } from "./displayfunc";
 import Ability from "./Ability.vue";
 import Tooltip from "./Tooltip.vue";
@@ -347,7 +347,7 @@ export default {
       return sum;
     },
     isEmpty(o) {
-      return Object.keys(o).length !== 0;
+      isEmpty(o);
     },
     getPercent(e) {
       if (this.$parent.player.allcount != undefined) {

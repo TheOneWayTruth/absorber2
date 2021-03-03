@@ -99,6 +99,7 @@ import Log from "./Log.vue";
 import Fight from "./Fight.vue";
 import Progressbar from "./Progressbar.vue";
 import Overlay from "./Overlay.vue";
+
 /*eslint no-prototype-builtins: "error"*/
 import {
   respawn,
@@ -137,15 +138,6 @@ export default {
     };
   },
   methods: {
-    ObjectLength(object) {
-      var length = 0;
-      for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-          ++length;
-        }
-      }
-      return length;
-    },
     exitFight() {
       this.enemy = null;
       this.player.auto = false;

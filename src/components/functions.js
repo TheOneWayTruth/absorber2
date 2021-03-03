@@ -571,13 +571,7 @@ export function getLastBoss(t) {
 }
 
 export function isEmpty(obj) {
-  for (var prop in obj) {
-    if (obj.hasOwnProperty(prop)) {
-      return false;
-    }
-  }
-
-  return JSON.stringify(obj) === JSON.stringify({});
+  return Object.keys(obj).length !== 0;
 }
 
 function checkDeath(target, attacker, func, res, itemlist) {
