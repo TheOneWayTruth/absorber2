@@ -281,13 +281,13 @@ export default {
   width: calc(100vw - 60px);
   min-height: 450px;
   margin: 10px;
-  margin-top: 80px;
+  margin: 120px 10px;
 }
 
 .abs {
   border: 1px solid black;
   position: fixed;
-  bottom: 85px;
+  top: 85px;
   text-decoration: none;
   padding: 5px;
   background: #ffffff;
@@ -323,6 +323,6 @@ export default {
   position: fixed;
   margin: 0px;
   background: grey;
-  top: 60px;
+  bottom: 76px;
 }
 </style>

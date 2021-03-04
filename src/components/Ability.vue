@@ -4,16 +4,11 @@
     <transition name="fade" mode="out-in">
       <span :key="rounded(val)">{{ rounded(val) }}</span>
     </transition>
-    <Tooltip2 v-if="tooltip" :item="pid" />
   </div>
 </template>
 
 <script>
-import Tooltip2 from "./Tooltip2.vue";
 export default {
-  components: {
-    Tooltip2,
-  },
   props: {
     pid: {
       type: String,
@@ -22,11 +17,6 @@ export default {
     val: {
       type: [String, Number],
       required: true,
-    },
-    tooltip: {
-      type: Boolean,
-      required: false,
-      default: true,
     },
   },
   methods: {

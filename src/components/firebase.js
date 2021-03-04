@@ -95,6 +95,7 @@ export function signInWithGoogle() {
                 return firebase.auth().getRedirectResult();
             })
             .then(function (result) {
+                /** @type {firebase.auth.OAuthCredential} */
                 resolve(result)
             })
             .catch(function (error) {

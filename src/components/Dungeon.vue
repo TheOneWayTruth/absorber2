@@ -8,11 +8,17 @@
   >
     <div>
       <div>
-        <div class="text">
-          <div>
-            <div class="time">
-              {{ gettime(this.$parent.player.time) }}
-            </div>
+        <div class="text fixbox">
+          <div v-show="opensearch">
+            <span
+              v-show="searchv != ''"
+              @click="closesearch"
+              class="closesearch"
+              >X</span
+            >
+            <input autocorrect="off" class="faker" v-model="searchv" />
+          </div>
+          <div v-show="openbar" class="flex">
             <button
               class="btn dun"
               @click="hideUnhide()"
@@ -28,8 +34,6 @@
                 :src="require('@/assets/icons/hidden.webp')"
                 alt="hidden"
               />
-              <span v-if="this.hidden">Hide Finished</span>
-              <span v-else>Show Finished</span>
             </button>
             <button
               @click="autofight()"
@@ -37,34 +41,25 @@
               :class="{ active: this.$parent.player.auto }"
             >
               <img :src="require('@/assets/icons/auto.webp')" alt="auto" />
-              <span>Autofight</span>
             </button>
-            <button
-              v-show="$parent.player.prestige >= 3"
-              class="btn dun"
-              @click="resetOrder()"
-            >
+            <button class="btn dun" @click="resetOrder()">
               <img :src="require('@/assets/icons/order.webp')" alt="auto" />
-              <span>Reset Order</span>
             </button>
-            <div v-show="$parent.player.prestige >= 5" style="float: right">
-              <img
-                style="padding: 5px; float: left"
-                :src="require('@/assets/icons/search.webp')"
-                alt="search"
-              />
-              <span
-                v-show="searchv != ''"
-                @click="closesearch"
-                class="closesearch"
-                >X</span
-              >
-              <input autocorrect="off" class="faker" v-model="searchv" />
+            <button class="btn dun" @click="opensearch = !opensearch">
+              <img :src="require('@/assets/icons/search.webp')" alt="auto" />
+            </button>
+          </div>
+
+          <div class="time" @click="openbar = !openbar">
+            {{ gettime(this.$parent.player.time) }}
+            <div style="float: right; color: black">
+              <span v-show="!openbar">▼</span>
+              <span v-show="openbar">▲</span>
             </div>
           </div>
         </div>
       </div>
-      <div>
+      <div style="margin-top: 20px">
         <div>
           <div class="flex">
             <div :key="key" v-for="(value, key) in getPrestigeEnemys()">
@@ -97,6 +92,8 @@ export default {
       loading: true,
       hidden: true,
       searchv: "",
+      openbar: false,
+      opensearch: false,
     };
   },
   methods: {
@@ -167,8 +164,32 @@ export default {
 </script>
 
 <style scoped>
+.dun {
+  min-width: 64px;
+  margin: 5px;
+}
+.dun img {
+  width: 64px;
+  height: auto;
+}
+
+.fullsize {
+  padding-top: 80px;
+}
+
 .flex {
-  justify-content: center;
+  justify-content: space-around;
+}
+
+.fixbox {
+  position: fixed;
+  bottom: 75px;
+  width: calc(100% - 12px);
+  margin: 0px -10px;
+  padding: 5px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
 }
 
 .kiste {
@@ -208,7 +229,7 @@ export default {
 
 .faker {
   display: block;
-  width: 200px;
+  width: calc(100% - 20px);
   border: 1px solid black;
   box-shadow: inset 0 0 4px grey;
   border-radius: 2px;
@@ -221,6 +242,7 @@ export default {
   cursor: text;
   font-family: "MedievalSharp", cursive;
 }
+
 .closesearch {
   padding: 2px;
   margin: 5px;
@@ -228,7 +250,7 @@ export default {
   color: red;
   font-size: 28px;
   cursor: pointer;
-  transform: translate(180px);
+  transform: translate(85vw);
   position: absolute;
 }
 .text {

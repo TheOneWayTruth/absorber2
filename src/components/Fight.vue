@@ -77,7 +77,7 @@
           >
         </div>
 
-        <div class="flex">
+        <div style="overflow: hidden" class="flex">
           <div
             v-show="value > 0"
             class="kiste"
@@ -217,6 +217,7 @@ export default {
   padding: 0px;
   z-index: 1;
   opacity: 0.98;
+  margin-bottom: 100px;
 }
 
 .box {
@@ -225,7 +226,9 @@ export default {
   padding: 10px;
   background: lightgray;
   min-width: 220px;
+  margin-bottom: 100px;
 }
+
 .small {
   padding: 2px;
   margin: 0px 4px 10px 4px;

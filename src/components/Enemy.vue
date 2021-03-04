@@ -64,7 +64,7 @@ export default {
 
   methods: {
     isDragable() {
-      return this.$parent.$parent.player.prestige >= 3;
+      return true;
     },
     handleDragStart(e) {
       this.dragging = true;

@@ -59,6 +59,7 @@ import Fight from "./Fight.vue";
 import Progressbar from "./Progressbar.vue";
 import Overlay from "./Overlay.vue";
 import Menue from "./Menue";
+//import "./admob.js";
 
 import {
   respawn,
@@ -425,30 +426,13 @@ export default {
       this.reset();
     },
     setNextEnemy() {
-      if (this.player.prestige >= 3) {
-        for (let ind of this.player.order) {
-          let e = this.enemieslist.find((e) => e.id == ind);
-          if (
-            this.player.counter[e.id] <
-            this.getLast(e.max, this.player.prestige)
-          ) {
-            this.enemy = respawn(e);
-            break;
-          }
-        }
-      } else {
-        let last = this.enemieslist.find((e) => e.id == this.player.lastEnemy);
-        if (last != undefined) {
-          if (
-            this.player.counter[last.id] <
-            this.getLast(last.max, this.player.prestige)
-          ) {
-            this.enemy = respawn(last);
-          } else {
-            this.enemy = null;
-            this.player.auto = false;
-            this.active = "dungeon";
-          }
+      for (let ind of this.player.order) {
+        let e = this.enemieslist.find((e) => e.id == ind);
+        if (
+          this.player.counter[e.id] < this.getLast(e.max, this.player.prestige)
+        ) {
+          this.enemy = respawn(e);
+          break;
         }
       }
     },

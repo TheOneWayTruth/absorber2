@@ -129,11 +129,6 @@
                   <span class="val">{{ key }}</span>
                   <img class="icon" v-if="value" :src="getImgUrl(value)" />
                 </div>
-                <Tooltip
-                  :type="'text'"
-                  :title="getRealEnemyName(value)"
-                  :item="'killed in ' + key + ' seconds'"
-                />
               </div>
             </div>
           </div>
@@ -156,11 +151,6 @@
                 <span class="val">{{ key }}</span>
                 <img class="icon" v-if="value" :src="getImgUrl(value)" />
               </div>
-              <Tooltip
-                :type="'text'"
-                :title="getRealEnemyName(value)"
-                :item="'killed ' + key + ' times'"
-              />
             </div>
           </div>
         </div>
@@ -186,11 +176,6 @@
               />
               <span class="val">{{ key }}</span>
             </div>
-            <Tooltip
-              :type="'text'"
-              :title="displayeskills2(value).name"
-              :item="displayeskills2(value).desc"
-            />
           </div>
         </div>
       </div>
@@ -217,7 +202,6 @@
           >
             <img width="110" :src="getImgUrl(value.id)" :alt="value.name" />
             <div>{{ value.name }}</div>
-            <Tooltip :item="value" :type="'item'" />
           </div>
           <div :key="value + key" v-for="(value, key) in getLocked()">
             <div class="comp" v-if="value.req != undefined">
@@ -234,10 +218,6 @@
                 :value="$parent.player.allcount[value.req.id]"
                 style="width: 100px"
               ></progress>
-              <Tooltip
-                :type="'text'"
-                :item="getPercent(value) + '% until Item is unlocked'"
-              />
             </div>
           </div>
         </div>
@@ -346,7 +326,7 @@
 <script>
 import { removeItemOnce } from "./functions";
 import Ability from "./Ability.vue";
-import Tooltip from "./Tooltip.vue";
+
 import {
   signInWithGoogle,
   setListender,
@@ -358,7 +338,7 @@ import {
 
 export default {
   name: "StatsItem",
-  components: { Ability, Tooltip },
+  components: { Ability },
   data() {
     return {
       dchance: null,
