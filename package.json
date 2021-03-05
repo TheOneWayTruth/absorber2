@@ -9,6 +9,7 @@
     "deploy": "firebase deploy --only hosting"
   },
   "dependencies": {
+    "cordova": "^9.0.0",
     "core-js": "^3.9.0",
     "firebase": "^8.2.9",
     "jquery": "^3.6.0",

@@ -7,15 +7,7 @@
           ready: checkready(value),
           fighting: value == $parent.$parent.enemy,
         }"
-        @click.middle="cheat"
         @click="selectEnemy(value)"
-        @dragstart="handleDragStart"
-        @dragend="handleDragEnd"
-        @dragover="handleDragOver"
-        @dragenter="handleDragEnter"
-        @dragleave="handleDragLeave"
-        @drop="handleDrop"
-        :draggable="isDragable()"
         class="kiste"
         :id="value.id"
       >
@@ -38,7 +30,6 @@
 
 <script>
 import { respawn } from "./functions";
-import $ from "jquery";
 
 export default {
   name: "EnemyItem",
@@ -63,49 +54,6 @@ export default {
   },
 
   methods: {
-    isDragable() {
-      return true;
-    },
-    handleDragStart(e) {
-      this.dragging = true;
-      this.$parent.dragSrcEl = e.target.id;
-      $(e.target).css("opacity", "0.5");
-      e.dataTransfer.effectAllowed = "move";
-    },
-    handleDragOver(e) {
-      e.preventDefault && e.preventDefault();
-      return false;
-    },
-    handleDragEnter() {
-      $(this).addClass("over");
-    },
-    handleDragLeave() {
-      $(this).removeClass("over");
-    },
-    handleDrop(e) {
-      e.stopPropagation && e.stopPropagation();
-
-      if (e.target.id != this.$parent.dragSrcEl) {
-        let ord = this.$parent.$parent.player.order;
-        let saveid = this.$parent.dragSrcEl;
-        ord.splice(ord.indexOf(saveid), 1);
-        ord.splice(ord.indexOf(e.target.id), 0, saveid);
-        this.$parent.$forceUpdate();
-      }
-      return false;
-    },
-    handleDragEnd() {
-      this.dragging = false;
-      $(".kiste").removeClass("over");
-      $(".kiste").css("opacity", "1");
-    },
-    cheat() {
-      if (this.$parent.$parent.player.name == "showmethemoney" && this.beta) {
-        this.$parent.$parent.player.counter[this.value.id] = this.max;
-        this.$parent.$parent.player.allcount[this.value.id] += this.max;
-        this.$parent.$parent.recalculate(this.$parent.$parent.player);
-      }
-    },
     checkready(a) {
       return null != a && this.min >= this.max;
     },
@@ -163,11 +111,6 @@ export default {
 .ready {
   background: lightcoral;
   box-shadow: inset -2px -2px 2px #ec5f5f;
-}
-.ready:hover {
-  background: lightcoral;
-  box-shadow: inset -2px -2px 2px #ec5f5f;
-  transform: translate(0px, 0px);
 }
 
 .fade-enter-active {

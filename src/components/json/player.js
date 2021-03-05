@@ -28,7 +28,7 @@ var player = {
     "prestige": 0,
     "points": 0,
     "go": false,
-    "order": [],
+    "path": [],
 }
 
 export default player;

@@ -7,7 +7,9 @@ import changelog from "./components/json/changelog.json";
 import bufflist from "./components/json/bufflist.json";
 import skillist from "./components/json/skilltree.json";
 import itemslist from "./components/json/items.json";
-import "./components/firebase.js"
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
 
 
 Vue.config.productionTip = false
@@ -23,6 +25,16 @@ Vue.prototype.images = []
 
 Vue.prototype.beta = false
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+
+
+
+function onDeviceReady() {
+  import("./components/firebase.js")
+
+  new Vue({
+    render: h => h(App),
+  }).$mount('#app')
+
+}
+
+

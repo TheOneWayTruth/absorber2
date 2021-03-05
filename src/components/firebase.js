@@ -14,12 +14,21 @@ const firebaseConfig = {
     measurementId: "G-DN11HDSJH2"
 };
 
-firebase.initializeApp(firebaseConfig);
 
+firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
 auth.languageCode = "de";
+
+auth.getRedirectResult().then((result) => {
+    if (result.credential) {
+        /** @type {firebase.auth.OAuthCredential} */
+        console.log(result)
+    }
+}).catch((error) => {
+    console.warn(error)
+});
 
 export function getUser() {
     return auth.currentUser;
@@ -89,18 +98,17 @@ export async function getAllDataBase(collection, id) {
 
 
 export function signInWithGoogle() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+
     return new Promise((resolve, reject) => {
-        auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
-            .then(() => {
-                return firebase.auth().getRedirectResult();
-            })
-            .then(function (result) {
-                /** @type {firebase.auth.OAuthCredential} */
-                resolve(result)
-            })
-            .catch(function (error) {
-                reject(error);
-            });
+        auth.signInWithRedirect(provider).then(() => {
+            return firebase.auth().getRedirectResult();
+        }).then((result) => {
+            /** @type {firebase.auth.OAuthCredential} */
+            resolve(result)
+        }).catch((error) => {
+            reject(error)
+        });
     });
 }
 
@@ -143,3 +151,5 @@ export function setListender(callback) {
         callback();
     });
 }
+
+
